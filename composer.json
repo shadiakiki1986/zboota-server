@@ -13,8 +13,7 @@
 	"homepage": "https://github.com/shadiakiki1986/zboota-server",
 	"minimum-stability": "stable",
 	"require":{
-		"php":">=5.5.9",
-		"aws/aws-sdk-php": ">=2.1.2,<2.5",
-		"phpunit/phpunit": "*"
+		"php":">=5.3.5",
+		"aws/aws-sdk-php": ">=2.1.2,<2.5"
 	}
 }
