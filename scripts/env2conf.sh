@@ -10,7 +10,7 @@ if [ -z "$ZBOOTA_SERVER_AWS_ACCESS" ]; then echo "Please set ACCESS env vars 1st
 
 echo "<?php"
 echo "define('ROOT','/home/travis/build/shadiakiki1986/zboota-server');"
-echo "define('AWS_PHAR','/usr/share/php5/aws.phar');"
+echo "define('AWS_PHAR','/home/travis/build/shadiakiki1986/aws.phar');"
 echo "define('AWS_KEY','$ZBOOTA_SERVER_AWS_KEY');"
 echo "define('AWS_SECRET','$ZBOOTA_SERVER_AWS_ACCESS');"
 echo "define('AWS_REGION','us-west-2');"

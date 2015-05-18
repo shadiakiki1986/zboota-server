@@ -14,3 +14,4 @@ env:
   - secure: "iET72qxIbXOwkmXE5FvB+u2f+sDIkkWdl02vnW5Onmf6CNC4DDaWxBIoxkyFl2VZZemdGLPCIQ5jHy8LxnVR5y2rfPCxh22QE/NneFx+OkbWiHF/XOfFN6/c2DAmniAkvEnk1BHJSM8gAOTqH/+h7KNUscVNwHQVP+31x0Fp9JIXzXggDq1PwpKg2jkscVYv0K3qHhLWhGNc8IS5PtPMwxVfSBIZi6dJRoXbD39KFuPpRIE2lG3NaJZLaNYMla7SQmB4RlcS5meBblOKSBd8g2Qa55nLRhr5UEwQ/Fvfi6ZLZkRhcn8xn435relQPH2S2zxa6vnk6phDLdrqvGm/H8HHdDwmiYX0JHUkmedCkmAbteTbB0ZW9ncfWpFDzR+2redKPxrOSysCpzyYiUoIq6oqtpP3clSuT/fSCSqaPcFsSlwXqjdo0RWRADru1hSCEzY9n2pW3/P+4v3UHF1uCLCAh5kww4FlfR167yqRBFE8ZZP6LvkDchlrk0OnaOLHdHTyeLNNTG+qqSPDtS8mqqab+oU9+lvqYwLuHpIjdaf/pmzY8TmqT/j4a608uQpNa12kijmxjwtv2axZOJD7HHYdCCu8fktChEBqmQieYXpGGhI2XwRyZi3FOzKf2/H27ITuS7hNI3RzPhbwpaHlXikc+ddLyIzYtmfeQe9HZ9E="
 install:
 - bash scripts/env2conf.sh && bash scripts/env2conf.sh | sudo tee /etc/zboota-server-config.php > /dev/null
+- wget "https://github.com/aws/aws-sdk-php/releases/download/2.7.9/aws.phar" -O /home/travis/build/shadiakiki1986/aws.phar
