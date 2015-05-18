@@ -13,4 +13,3 @@ sudo: required
 before_script:
 - composer install
 - bash scripts/env2conf.sh && bash scripts/env2conf.sh | sudo tee /etc/zboota-server-config.php > /dev/null
-script: phpunit --bootstrap tests/bootstrap.php tests/
