@@ -45,11 +45,12 @@ function getCore($lpns,$force=false) {
 			if(count($ud['Item'])==0) { throw new Exception("Something is wrong with syncCore"); }
 		} else {
 			// if found, only update the last get timestamp
-			$awsItem=$ud['Item'];
-                        $awsItem['lastGetTs']=array('S'=>date("Y-m-d H:i:s"));
-			$ddb->putItem(array(
+			// http://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.DynamoDb.DynamoDbClient.html#_updateItem
+			$ddb->updateItem(array(
 			    'TableName' => 'zboota-cars',
-			    'Item' => $awsItem
+			    'Key' =>  array( 'id' => array('S' => $k) ),
+			    'ExpressionAttributeValues'=>array( ':tnow'=>array('S'=>date("Y-m-d H:i:s"))),
+			    'UpdateExpression' => 'SET lastGetTs = :tnow'
 			));
 		}
 

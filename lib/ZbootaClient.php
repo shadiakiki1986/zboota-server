@@ -40,13 +40,16 @@ function checkPassFail() {
 }
 
 function incrementPassFail() {
-	$user=$this->entry;
 	if(!isset($this->entry['passFail'])) $this->entry['passFail']=array('N'=>0);
 	$this->entry['passFail']['N']=$this->entry['passFail']['N']+1;
 
-	$this->client->putItem(array(
+	// http://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.DynamoDb.DynamoDbClient.html#_updateItem
+	// http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Modifying.html#Expressions.Modifying.UpdateExpressions.ADD
+	$this->client->updateItem(array(
 	    'TableName' => 'zboota-users',
-	    'Item' => $this->entry
+	    'Key' =>  array( 'email' => array('S' => $this->email) ),
+	    'ExpressionAttributeValues'=>array( ':v1'=>array('N'=>1)),
+	    'UpdateExpression' => 'SET passFail = if_not_exists(passFail,0) + :v1'
 	));
 }
 
@@ -60,25 +63,30 @@ function checkPassword() {
 
 function dropPassFail() {
 	unset($this->entry['passFail']);
-	$this->client->putItem(array(
+	$this->client->updateItem(array(
 	    'TableName' => 'zboota-users',
-	    'Item' => $this->entry
+	    'Key' =>  array( 'email' => array('S' => $this->email) ),
+	    'UpdateExpression' => 'REMOVE passFail'
 	));
 }
 
 function updateAccountNumbers($lpns) {
 	$this->entry['lpns']['S']=$lpns; // overwrite existing data with given data
-	$this->client->putItem(array(
+	$this->client->updateItem(array(
 	    'TableName' => 'zboota-users',
-	    'Item' => $this->entry
+	    'Key' =>  array( 'email' => array('S' => $this->email) ),
+	    'ExpressionAttributeValues'=>array( ':v1'=>array('S'=>$lpns)),
+	    'UpdateExpression' => 'SET lpns = :v1'
 	));
 }
 
 function updateLastloginDate() {
 	$this->entry['lastloginDate']['S']=date("Y-m-d H:i:s"); // overwrite existing data with given data
-	$this->client->putItem(array(
+	$this->client->updateItem(array(
 	    'TableName' => 'zboota-users',
-	    'Item' => $this->entry
+	    'Key' =>  array( 'email' => array('S' => $this->email) ),
+	    'ExpressionAttributeValues'=>array( ':v1'=>array('S'=>date("Y-m-d H:i:s"))),
+	    'UpdateExpression' => 'SET lastloginDate = :v1'
 	));
 }
 

@@ -2,6 +2,8 @@
 2015-05-18
 * added/improved some tests
 * added travis.yml for CI with travis-ci.org
+* incorporated composer for phpunit, aws (instead of AWS_PHAR)
+* replaced several instances of putItem with updateItem
 
 2015-05-17
 * photos: moving from using local folder to S3 bucket + tested
