@@ -17,3 +17,6 @@ echo "define('AWS_SECRET','$ZBOOTA_SERVER_AWS_ACCESS');"
 echo "define('AWS_REGION','$ZBOOTA_SERVER_AWS_REGION');"
 echo "define('S3_BUCKET','zboota-server');"
 echo "define('S3_FOLDER','photos');"
+echo "define('MAX_PASS_FAIL',3);"
+echo "define("MY_CURL_TIMEOUT",10);"
+
