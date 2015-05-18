@@ -7,7 +7,7 @@
 define("ROOT", "/home/shadi/Development/zboota-server");
 
 # AWS connection information
-define("AWS_PHAR","/usr/share/php5/aws.phar");
+// no longer needed with composer // define("AWS_PHAR","/usr/share/php5/aws.phar");
 define('AWS_KEY','abcdefghi');
 define('AWS_SECRET','abcdefghi');
 define('AWS_REGION','abcdefghi');

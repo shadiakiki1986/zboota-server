@@ -1,4 +1,5 @@
 <?php
+
 require_once '/etc/zboota-server-config.php';
 require_once ROOT.'/lib/getCore.php';
 

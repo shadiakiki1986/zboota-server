@@ -1,7 +1,7 @@
 <?php
 
 require_once '/etc/zboota-server-config.php';
-include AWS_PHAR;
+// no more needed after composer // include AWS_PHAR;
 use Aws\DynamoDb\DynamoDbClient;
 
 function connectDynamodb() {
