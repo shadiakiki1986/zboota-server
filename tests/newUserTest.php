@@ -22,7 +22,6 @@ class newUserTest extends PHPUnit_Framework_TestCase {
 	}
 
 	// create user
-var_dump(MAILGUN_KEY, MAILGUN_DOMAIN, MAILGUN_FROM, MAILGUN_PUBLIC_KEY);
 	$zc=new ZbootaClient("shadiakiki1986@yahoo.com");
 	$zc->newUser();
 
