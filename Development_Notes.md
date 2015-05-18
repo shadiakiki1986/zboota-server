@@ -13,3 +13,5 @@ These are misc notes for myself
  * vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/
 * Modified .travis.yml
  * travis-lint
+* encrypting sensitive data in travis
+ * travis encrypt SOMEVAR=secretvalue
