@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>Zboota server</title>
+<style>
+ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+li {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+
+li:before {
+  content: "...";
+  padding-right: 5px;
+}
+</style>
+<script>
+(function() {
+var req;
+
+req = new XMLHttpRequest();
+
+req.onreadystatechange = function() {
+ var cType;
+ if (this.readyState == 4) {
+ if (this.status != 200) {
+    console.log('Error : Status '+this.status+' returned.');
+ } else {
+    stats=JSON.parse(this.responseText);
+    document.getElementById('response').innerHTML = "It currently monitors "+stats.cars+" cars"+
+	" and has "+stats.notifications+" / "+stats.users+" registered users with outstanding violations.";
+  }
+ }
+}
+req.open('GET', 'http://genesis.akikieng.com/zboota-server/api/statistics.php', true);
+req.send(null);
+}());
+
+</script>
+</head>
+<body>
+<img src="img/logo-180.png" alt="Logo" >
+<h1>Yet Another Zboota App server</h1>
+<p>	This is the server side of my zboota app.
+	<div id="response">
+	</div>
+</p>
+<h3>The zboota app itself allows you to ...</h3>
+<ul>
+<li>add multiple car plate numbers</li>
+<li>see any outstanding violations with <a href="http://www.isf.gov.lb/en/speedtickets"><img src="img/isf-top_logo_en.png" alt="ISF" /></a> and <a href="http://www.parkmeterlebanon.com/"><img src="img/pml-header_website_copy.jpg" alt="PML" /></a>.</li>
+<li>see your car's or cars' mechanique schedule/fee</li>
+<li>register an email address</li>
+<li>log in with a registered email address</li>
+</ul>
+<h3>The purpose of the server is to ...</h3>
+<ul>
+<li>provide the back-end for the app, </li>
+<li>expose a simple <a href="api">API</a> for interested users, </li>
+<li>serve the app as a <a href="client">web page</a> for usage in browsers, </li>
+<li>and to serve this page.</li>
+</ul>
+<h3>Registering your email on the app allows you to ...</h3>
+<ul>
+<li>save your list of car numbers in case you log in from another device</li>
+<li>receive an email as soon as one of your added car plate numbers has an associated violation</li>
+</ul>
+<h3>The zboota app is published on ...</h3>
+<ul>
+<li><a href="https://play.google.com/store/apps/details?id=com.akikieng.genesis.zbootaapp"><img src="img/store-google.png" alt="Google Play" /></a> for android devices</li>
+<li><a href="https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=974745846&mt=8"><img src="img/store-apple.png" alt="Apple Store" /></a> for iOS devices</li>
+<li><a href="client"><img src="img/desktop_web.jpeg" alt="this server for web browsers" /></a></li>
+<li><a href="https://github.com/shadiakiki1986/zboota-app"><img src="img/github_commits_logo.png" alt="Github" height="100px" width="100px" /></a> for the open-source community</li>
+<li><a href="https://www.facebook.com/yaza4"><img src="img/facebook-logo-icon-02.png" alt="facebook page" /></a> for social interaction purposes</li>
+</ul>
+<h3>Please note that ...</h3>
+<ul>
+<li>this app and its infrastructure were developed solely to serve my personal needs.</li>
+<li>your constructive feedback is welcome</li>
+<li>I do not take any responsibility not whatsoever for any mistakes that may cause you to be fined.</li>
+<li>the data belongs to its sole owners <a href="http://www.isf.gov.lb/en/speedtickets"><img src="img/isf-top_logo_en.png" alt="ISF" /></a> and <a href="http://www.parkmeterlebanon.com/"><img src="img/pml-header_website_copy.jpg" alt="PML" /></a>.</li>
+<li>the app itself is licensed under <a href="http://wtfpl.net"><img src="img/wtfpl-logo-220x1601.png" alt="WTFPL" width="110px" height="80px" /></a>,</li>
+<li>there are similar apps out there, like <a href="https://play.google.com/store/apps/details?id=air.speedTicketLebanon">this</a>,
+<a href="http://www.appszoom.com/android_applications/tools/lebanese-traffic-ticket_inbfc.html">this</a>,
+<a href="https://play.google.com/store/apps/details?id=com.stround.lebanoncarfines">this</a>,
+<a href="https://play.google.com/store/apps/details?id=com.tesladroid.lebanontickets">this</a>,
+and <a href="https://play.google.com/store/apps/details?id=com.omr.zbt">this</a></li>
+</ul>
+</body>
+</html>
