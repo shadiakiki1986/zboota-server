@@ -5,7 +5,6 @@
 # export ZBOOTA_SERVER_AWS_KEY=123
 # export ZBOOTA_SERVER_AWS_ACCESS=123
 
-echo "bla $ZBOOTA_SERVER_AWS_KEY"
 if [ -z "$ZBOOTA_SERVER_AWS_KEY" ]; then echo "Please set AWS_KEY env var"; exit -1; fi
 if [ -z "$ZBOOTA_SERVER_AWS_ACCESS" ]; then echo "Please set ACCESS env vars 1st"; exit -1; fi
 

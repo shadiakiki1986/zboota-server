@@ -10,4 +10,4 @@ env:
   ZBOOTA_SERVER_AWS_ACCESS:
     secure: agooNLtz6YU1mvkwzxGdt68pN1EnA22mCJAcPUz8s0o2ahrDU1slpuj7reUZTHuCkJNKbQ7PSBfRVYbJQINmg+ZIZAg6wd8ohTiNSnwvohZDJKU+PMlw/KiFV3dKbzicbM1ZExu77wg+5Zf0aIQW/ImA34ZpW7YB6TYFA2Zf4JsxyRmM8aZwrZzBwh84JzOUgO/rwWDgaudg09KrvKjyoQSngqc/Sst315iZ1nuFJuJk//m2NRvYupZH5mGkkH+26ZGckc3mGvycyayacEA8AXt/wC/aBAxlAkOOhsolAEekpPcQjAeWzcd9oKZyyB9isOb0UUnJVyxpnCzXrtUW2+nSANga2Gx2GwSAdcil9b3lBcJnHhLmFketaooKOWYmoqbDI5oYgI0DAFw6OQjtmsxOImg5ySZN+LTTrlm4gjsiKX/sGKj66EVqtLxUr7jHG/OcNsbznZ+czv4r7k+Gbe4L10UTapvwm+nY3ppuDy4ES5BvlO+E/81JWdD7ZCDSduYj0NHLddLX63zrwB/EsPKGAlj5IT5I41gW/N56LAWpxif/EO7x625P577/QwvAqFWcObBdJF3gkVdAmSGTxmhWPuMlRTGRCzq4bzxcPqBOv8dKJJPJdJ2dwQeonf2q9nV7pAOitLPx4Fnje1uJSi+tidCpFqn3TXgNKfWTpoY=
 install:
-- sudo bash scripts/env2conf.sh > /etc/zboota-server-config.php
+- bash scripts/env2conf.sh | sudo tee /etc/zboota-server-config.php > /dev/null
