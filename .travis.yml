@@ -5,13 +5,12 @@
 language: php
 php:
 - '5.5'
-sudo: required
-script:
-- phpunit tests/
 env:
   global:
   - secure: "PcdUb84SOCQFRXkmWmaWIGkAm6NBUUfbo83CGZhMC6NI13RLTBCHcBeIJyhwYE/bIiQWwrvgQFQMQpP2STzAPm8hR2lB+gUVvvlswNeuTNAecSyLOF57yp0jQEkMcmsBfJ0xEqn99wv2fKyyLHm3IUOoMHC0Iy3VLY+8o/icN7mAHtcp6U4H9HsoAI75fzYQX0jMERgk0t3HI0gDE3Otviaas+uvcnU+PQll0eMc3Lu3v3/eizGNlOWH1bfGUwCwvDyJlB/yOrrHlvKeB59X+hLRBHCuwBEmIWfcva6KqgUpgqnLI+L7Rents3PM/PMNuzCCV6xS/5wAUoICnKQoiz/VhT6DHnCZxhksnroazvXe0ixGLZfrQ3ebV5GqljgsVvYFjhLbYfCn7tKFtKnfiMnzuGuIUF/wkkiDVtiy2LYGduXh/r3Nc80QDQur/owa1CWUrXbrkv5Op2DgdEvmf42Tyt98TsypObby5VT7/bGhd0BSj6l8Fvr6pa1/EnuGR56dJiWiVSOWL7x8KPngqqWZHogx1oy+Fl8ZhSvlMKz8BKC1FOfhdAjQeJmM7oXjB9MRQE17/0F85rUhKHifh+J59jLfqctGHNQGPMPBc5jjDdzzRRSqpnh6pfsU3gMbtyXVzCxX4xNzpCw86OEQgEfGUmV5i8HOIlMWDpApa94="
   - secure: "iET72qxIbXOwkmXE5FvB+u2f+sDIkkWdl02vnW5Onmf6CNC4DDaWxBIoxkyFl2VZZemdGLPCIQ5jHy8LxnVR5y2rfPCxh22QE/NneFx+OkbWiHF/XOfFN6/c2DAmniAkvEnk1BHJSM8gAOTqH/+h7KNUscVNwHQVP+31x0Fp9JIXzXggDq1PwpKg2jkscVYv0K3qHhLWhGNc8IS5PtPMwxVfSBIZi6dJRoXbD39KFuPpRIE2lG3NaJZLaNYMla7SQmB4RlcS5meBblOKSBd8g2Qa55nLRhr5UEwQ/Fvfi6ZLZkRhcn8xn435relQPH2S2zxa6vnk6phDLdrqvGm/H8HHdDwmiYX0JHUkmedCkmAbteTbB0ZW9ncfWpFDzR+2redKPxrOSysCpzyYiUoIq6oqtpP3clSuT/fSCSqaPcFsSlwXqjdo0RWRADru1hSCEzY9n2pW3/P+4v3UHF1uCLCAh5kww4FlfR167yqRBFE8ZZP6LvkDchlrk0OnaOLHdHTyeLNNTG+qqSPDtS8mqqab+oU9+lvqYwLuHpIjdaf/pmzY8TmqT/j4a608uQpNa12kijmxjwtv2axZOJD7HHYdCCu8fktChEBqmQieYXpGGhI2XwRyZi3FOzKf2/H27ITuS7hNI3RzPhbwpaHlXikc+ddLyIzYtmfeQe9HZ9E="
-install:
+sudo: required
+before_script:
+- composer install
 - bash scripts/env2conf.sh && bash scripts/env2conf.sh | sudo tee /etc/zboota-server-config.php > /dev/null
-- wget "https://github.com/aws/aws-sdk-php/releases/download/2.7.9/aws.phar" -O /home/travis/build/shadiakiki1986/aws.phar
+script: phpunit tests/
