@@ -1,4 +1,4 @@
-=Ver 0.0.3=
+# Ver 0.0.3
 2015-05-18
 * added/improved some tests
 * added travis.yml for CI with travis-ci.org
@@ -14,18 +14,18 @@
 2015-05-15
 * force update a car if it is available in the ddb but with old data
 * split out uploadPhotoCore from uploadPhoto
-** also added uploadPhotoAsDataUrl
-** also simplified core
+ * also added uploadPhotoAsDataUrl
+ * also simplified core
 * added scipts listEmpty, etc
 * removed trailing period from email sentence of forgot password and new email
 * get2 is same as get but for angular get
-** I need to keep get because current apps use it
-** I should decomission it when no apps use it anymore
+ * I need to keep get because current apps use it
+ * I should decomission it when no apps use it anymore
 * loading photo as dataurl instaed of image because of javascript security exceptino in the latter case
 * somehow I had accidentally removed the conversion of errors to json from login.php
-** I remember it was when I saw an error that the user was not supposed to see
-** so I judged that I should keep errors internal
-** but now I realize that some errors are supposed to bubble up to the user, such as wrong password, or unregistered email
+ * I remember it was when I saw an error that the user was not supposed to see
+ * so I judged that I should keep errors internal
+ * but now I realize that some errors are supposed to bubble up to the user, such as wrong password, or unregistered email
 * some CORS, angular http, jquery ajax, php crap
 
 2015-05-13
@@ -38,7 +38,7 @@
 
 2015-05-08
 * not force refreshing data in case hp/y/t data missing
-** just remove dm before returning to user
+ * just remove dm before returning to user
 * added test to see service availability
 * api minor improvements of check variables at start to avoid notices
 * furthered test_09_connectivity.sh
@@ -57,7 +57,7 @@
 * added check if car modified in getCore.php and forcing sync if so
 * added case of no results found to syncCoreDawlati...
 
-=Ver 0.0.2=
+# Ver 0.0.2
 2015-05-04
 * include AWS_PHAR instead of require_once ...
 * added backing up data weekly
@@ -66,18 +66,18 @@
 * dropUnconfirmed: changed to 30 days instead of 7 days
 * added timestamp to log entries
 * added addedTs to zboota-cars: this is the time at which a car is first added
-** this will allow me to track the evolution of number of added cars for unregistered users
+ * this will allow me to track the evolution of number of added cars for unregistered users
 * added default timestamp of current time for lastGetTs if missing
 
 2015-04-23
 * aws.phar is no longer soft-linked from a million places
-** because now I just use defined variable AWS_PHAR in the config file
+ * because now I just use defined variable AWS_PHAR in the config file
 * also stopped dropping orphan cars on a daily basis
-** and attached a last get date in order to drop "stale" cars instead
-** since all unregistered emails use "orphan" cars
-* new accounts' initial list of cars was [] but should be {}
+ * and attached a last get date in order to drop "stale" cars instead
+ * since all unregistered emails use "orphan" cars
+* new accounts initial list of cars was [] but should be {}
 
-=Ver 0.0.1=
+# Ver 0.0.1
 
 2015-04-22
 * added statistics.php
