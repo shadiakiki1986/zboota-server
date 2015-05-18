@@ -13,4 +13,5 @@ These are misc notes for myself
 * Modified .travis.yml
  * travis-lint
 * encrypting sensitive data in travis
- * travis encrypt SOMEVAR=secretvalue
+ * travis encrypt 'SOMEVAR=secretvalue' (no need for quotes)
+ * http://docs.travis-ci.com/user/encryption-keys/#Note-on-escaping-certain-symbols
