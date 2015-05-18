@@ -4,6 +4,11 @@
 * added travis.yml for CI with travis-ci.org
 * incorporated composer for phpunit, aws (instead of AWS_PHAR)
 * replaced several instances of putItem with updateItem
+* after finally getting around the gnu tls error on travis-ci connecting to dynamodb (soln was to change from us-west-2 to us-east-1)
+** i ran the unit tests locally and corrected them by connecting to us-east-1 (after manually creating the tables)
+** i also added tests for newly created accounts
+** using aws >=8.4 so that the update of passfail works
+** travis only testing php 5.5 since that was irrelevant to the gnu tls issue
 
 2015-05-17
 * photos: moving from using local folder to S3 bucket + tested

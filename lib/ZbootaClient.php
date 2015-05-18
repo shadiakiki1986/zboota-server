@@ -3,6 +3,8 @@
 require_once '/etc/zboota-server-config.php';
 require_once ROOT.'/lib/connectDynamodb.php';
 require_once ROOT.'/lib/ZbootaClientInterface.php';
+require_once ROOT.'/lib/mailSend.php';
+require_once ROOT.'/lib/mailValidate.php';
 
 class ZbootaClient implements ZbootaClientInterface {
 
@@ -48,9 +50,11 @@ function incrementPassFail() {
 	$this->client->updateItem(array(
 	    'TableName' => 'zboota-users',
 	    'Key' =>  array( 'email' => array('S' => $this->email) ),
-	    'ExpressionAttributeValues'=>array( ':v1'=>array('N'=>1)),
-	    'UpdateExpression' => 'SET passFail = if_not_exists(passFail,0) + :v1'
+	    'ExpressionAttributeValues'=>array( ':v1'=>array('N'=>1), ':v0'=>array('N'=>0)),
+	    'UpdateExpression' => 'SET passFail = if_not_exists(passFail,:v0) + :v1'
 	));
+//	    'UpdateExpression' => 'ADD passFail :v1'
+
 }
 
 function checkPassword() {
@@ -111,10 +115,26 @@ function initiateAccount() {
 }
 
 function newUser() {
+	// check if valid before sending email
+	if(!mailValidate($this->email)) {
+		throw new Exception("Invalid email ".$this->email.".");
+	}
+
 	$this->connect();
 	$this->checkEmailRegistered(false); // throws an exception if the email exists
 	$this->generatePassword();
-	return $this->pass;
+
+	// send email
+	if(!mailSend($this->email,
+		"Zboota registration",
+		"Welcome to Zboota.
+		Your password is ".$this->pass
+	)) {
+		throw new Exception("Failed to send email to ".$this->email.".");
+	}
+
+	// append to table
+	$this->initiateAccount();
 }
 
 }

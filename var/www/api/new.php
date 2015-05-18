@@ -31,8 +31,6 @@ if(isset($argc) && $argc>1) {
 
 require_once '/etc/zboota-server-config.php';
 require_once ROOT.'/lib/ZbootaClient.php';
-require_once ROOT.'/lib/mailSend.php';
-require_once ROOT.'/lib/mailValidate.php';
 
 try {
 
@@ -40,26 +38,9 @@ try {
 		throw new Exception("Please enter your email.\n");
 	}
 
-	// check if valid before sending email
-	if(!mailValidate($email)) {
-		throw new Exception("Invalid email {$email}.");
-	}
 
 	$zc=new ZbootaClient($email);
-	$pass=$zc->newUser(); // would throw an exception if email exists
-
-	// send email
-	if(!mailSend($email,
-		"Zboota registration",
-		"Welcome to Zboota.
-		Your password is {$pass}"
-	)) {
-		echo json_encode(array('error'=>"Failed to send email to {$email}."));
-		return;
-	}
-
-	// append to table
-	$zc->initiateAccount();
+	$zc->newUser(); // would throw an exception if email exists
 
 	// done
 	echo "{}";

@@ -1,7 +1,5 @@
 language: php
-php:
-- 5.4
-- 5.3
+php: 5.5
 env:
   global:
   - ZBOOTA_SERVER_AWS_REGION="us-east-1"

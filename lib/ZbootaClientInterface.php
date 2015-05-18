@@ -12,4 +12,5 @@ interface ZbootaClientInterface {
 	function updateLastloginDate();
 	function generatePassword();
 	function initiateAccount();
+	function newUser();
 }

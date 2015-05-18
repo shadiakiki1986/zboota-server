@@ -6,25 +6,36 @@ require_once '/etc/zboota-server-config.php';
 require_once ROOT.'/lib/loginCore.php';
 require_once ROOT.'/lib/connectDynamodb.php';
 
+$pass="dummy";
+
 class loginCoreTest extends PHPUnit_Framework_TestCase {
+
+    protected $backupGlobals = FALSE;
+
     public function testReset() {
 	// drop passFail flag so as not to interfere with demo usage
-	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","3fe33");
+	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","dummy");
 	$zc->connect();
 	$zc->dropPassFail();
 
-	// test that we can login again
-	$this->assertTrue($this->testSuccess());
+	// set the password for other tests
+	$GLOBALS['pass']=$zc->entry['pass']['S']; 
     }
 
+    /**
+     * @depends testReset
+     */
     public function testSuccess() {
 	// initialize by logging in successfully once
 	// Test data retrieval
-	$lc=loginCore("shadiakiki1986@yahoo.com","3fe33")->entry;
+
+	$lc=loginCore("shadiakiki1986@yahoo.com",$GLOBALS['pass'])->entry;
 	$this->assertTrue(array_key_exists("lpns",$lc));
-	return array_key_exists("lpns",$lc);
     }
 
+    /**
+     * @depends testSuccess
+     */
     public function testFailIncrement() {
 	// Test that account fail flag is incremented
 	try {
@@ -32,20 +43,26 @@ class loginCoreTest extends PHPUnit_Framework_TestCase {
 	} catch (Exception $e) {
 	    $this->assertTrue($e->getMessage()=="Wrong password.");
 	}
-	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","0000");
+	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","dummy");
 	$zc->connect();
+	$this->assertTrue(array_key_exists("passFail",$zc->entry));
 	$this->assertTrue($zc->entry['passFail']['N']=="1");
     }
 
+    /**
+     * @depends testFailIncrement
+     */
     public function testFailDrop() {
 	// Test that the fail flag is dropped after a successful login
-	loginCore("shadiakiki1986@yahoo.com","3fe33");
-	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","3fe33");
+	loginCore("shadiakiki1986@yahoo.com",$GLOBALS['pass']);
+	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","dummy");
 	$zc->connect();
 	$this->assertTrue(!array_key_exists("passFail",$zc->entry));
     }
 
-
+    /**
+     * @depends testFailDrop
+     */
     public function testFailLock() {
 	// Test that account is locked after 3? failed attempts
 	try { loginCore("shadiakiki1986@yahoo.com","0000"); } catch (Exception $e) { }
@@ -59,6 +76,9 @@ class loginCoreTest extends PHPUnit_Framework_TestCase {
 	}
     }
 
+    /**
+     * @depends testFailLock
+     */
     public function testReset2() { $this->testReset(); }
 
 }
