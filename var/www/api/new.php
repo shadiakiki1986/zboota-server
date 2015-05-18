@@ -46,10 +46,7 @@ try {
 	}
 
 	$zc=new ZbootaClient($email);
-	$zc->connect();
-	$zc->checkEmailRegistered(false); // throws an exception if the email exists
-	$zc->generatePassword();
-	$pass=$zc->pass;
+	$pass=$zc->newUser(); // would throw an exception if email exists
 
 	// send email
 	if(!mailSend($email,

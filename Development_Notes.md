@@ -9,8 +9,7 @@ These are misc notes for myself
  * composer dump-autoload
  * composer update
 * Run unit tests
- * vendor/bin/phpunit tests/
- * vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/
+ * phpunit tests/
 * Modified .travis.yml
  * travis-lint
 * encrypting sensitive data in travis

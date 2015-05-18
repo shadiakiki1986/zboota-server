@@ -110,4 +110,11 @@ function initiateAccount() {
 
 }
 
+function newUser() {
+	$this->connect();
+	$this->checkEmailRegistered(false); // throws an exception if the email exists
+	$this->generatePassword();
+	return $this->pass;
+}
+
 }

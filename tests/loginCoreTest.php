@@ -5,8 +5,6 @@
 require_once '/etc/zboota-server-config.php';
 require_once ROOT.'/lib/loginCore.php';
 require_once ROOT.'/lib/connectDynamodb.php';
-require_once ROOT.'/lib/getZbootaUsers.php';
-require_once ROOT.'/lib/sendNotificationsCore.php';
 
 class loginCoreTest extends PHPUnit_Framework_TestCase {
     public function testReset() {
