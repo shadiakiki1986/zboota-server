@@ -1,0 +1,19 @@
+{
+	"name":"shadiakiki1986/zboota-server",
+	"description":"Server-side for zboota-app",
+	"keywords":["zboota"],
+	"type":"project",
+	"license":"WTFPL",
+	"authors":[
+		{
+			"name":"Shadi Akiki",
+			"email":"shadiakiki1986@gmail.com"
+		}
+	],
+	"homepage": "https://github.com/shadiakiki1986/zboota-server",
+	"minimum-stability": "stable",
+	"require":{
+		"php":">=5.5.9",
+		"aws/aws-sdk-php": ">=2.7.9"
+	}
+}
