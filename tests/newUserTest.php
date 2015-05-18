@@ -8,6 +8,8 @@ require_once ROOT.'/lib/ZbootaClient.php';
 class newUserTest extends PHPUnit_Framework_TestCase {
 
     public function testCreate() {
+	if(AWS_REGION!="us-east-1") throw new Exception("Please only run this test in us-east-1");
+
 	// if user exists, remove it to test create
 	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","dummy");
 	$zc->connect();
@@ -20,6 +22,7 @@ class newUserTest extends PHPUnit_Framework_TestCase {
 	}
 
 	// create user
+var_dump(MAILGUN_KEY, MAILGUN_DOMAIN, MAILGUN_FROM, MAILGUN_PUBLIC_KEY);
 	$zc=new ZbootaClient("shadiakiki1986@yahoo.com");
 	$zc->newUser();
 
