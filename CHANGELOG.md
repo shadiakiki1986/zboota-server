@@ -1,6 +1,7 @@
 =Ver 0.0.3=
 2015-05-18
 * added/improved some tests
+* added travis.yml for CI with travis-ci.org
 
 2015-05-17
 * photos: moving from using local folder to S3 bucket + tested
