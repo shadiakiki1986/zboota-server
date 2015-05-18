@@ -9,7 +9,7 @@ if [ -z "$ZBOOTA_SERVER_AWS_KEY" ]; then echo "Please set AWS_KEY env var"; exit
 if [ -z "$ZBOOTA_SERVER_AWS_ACCESS" ]; then echo "Please set ACCESS env vars 1st"; exit -1; fi
 
 echo "<?php"
-echo "define('ROOT','~/zboota-server');"
+echo "define('ROOT','/home/travis/build/shadiakiki1986/zboota-server');"
 echo "define('AWS_PHAR','/usr/share/php5/aws.phar');"
 echo "define('AWS_KEY','$ZBOOTA_SERVER_AWS_KEY');"
 echo "define('AWS_SECRET','$ZBOOTA_SERVER_AWS_ACCESS');"
