@@ -1,5 +1,7 @@
 #!/bin/bash
-# Check document INSTALL
+
+echo "OUTDATED. Check document INSTALL.md"
+exit
 
 INSTALL_DIR=.
 CONFIG=$INSTALL_DIR/config.php

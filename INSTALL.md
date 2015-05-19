@@ -13,6 +13,15 @@ chmod +x phpunit.phar
 sudo mv phpunit.phar /usr/local/bin/phpunit
 ```
 
+## Note on phpunit
+I could''ve used the following in composer.json to require phpunit
+```
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+```
+but instead, I''m just requiring its global installation
+
 # Installation
 * git clone https://shadiakiki1986@github.org/shadiakiki1986/zboota-server
 * cd zboota-server

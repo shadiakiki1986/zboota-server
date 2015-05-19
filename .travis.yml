@@ -13,7 +13,7 @@ sudo: false
 before_script:
 - composer self-update
 - composer install
-- bash scripts/env2conf.sh && bash scripts/env2conf.sh > config.php
+- bash scripts/env2conf.sh > /dev/null && bash scripts/env2conf.sh > config.php
 addons:
   ssh_known_hosts:
   - https://dynamodb.us-east-1.amazonaws.com/
