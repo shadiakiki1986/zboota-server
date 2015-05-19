@@ -9,7 +9,7 @@ These are misc notes for myself
  * composer dump-autoload
  * composer update
 * Run unit tests
- * phpunit tests/
+ * phpunit --verbose tests/
 * Modified .travis.yml
  * travis-lint
 * encrypting sensitive data in travis

@@ -8,7 +8,12 @@ require_once ROOT.'/lib/ZbootaClient.php';
 class newUserTest extends PHPUnit_Framework_TestCase {
 
     public function testCreate() {
-	if(AWS_REGION!="us-east-1") throw new Exception("Please only run this test in us-east-1");
+	if(AWS_REGION!="us-east-1") {
+		// Stop here and mark this test as incomplete.
+		$this->markTestIncomplete(
+		 "Please only run this test in us-east-1.\nDo this by replacing us-west-2 with us-east-1 in config.php in the root folder.\nRemember to revert back to us-west-2 for production"
+		);
+	}
 
 	// if user exists, remove it to test create
 	$zc=new ZbootaClient("shadiakiki1986@yahoo.com","dummy");
