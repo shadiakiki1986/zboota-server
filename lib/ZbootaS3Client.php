@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__).'/../config.php';
-include AWS_PHAR;
 use Aws\S3\S3Client;
 
 class ZbootaS3Client {
