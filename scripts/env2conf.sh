@@ -15,7 +15,7 @@ if [ -z "$MAILGUN_PUBLIC_KEY" ]; then echo "Please set env vars. Check scripts/e
 
 echo "<?php"
 echo "define('ROOT', dirname(__FILE__));"
-echo "require ROOT.'/vendor/autoload.php';"
+echo "require_once ROOT.'/vendor/autoload.php';"
 echo "define('AWS_KEY','$ZBOOTA_SERVER_AWS_KEY');"
 echo "define('AWS_SECRET','$ZBOOTA_SERVER_AWS_ACCESS');"
 echo "define('AWS_REGION','$ZBOOTA_SERVER_AWS_REGION');"

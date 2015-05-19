@@ -5,7 +5,7 @@
 
 # Root directory of installation of zboota-server
 define("ROOT", dirname(__FILE__));
-require ROOT.'/vendor/autoload.php'; #  if this line throw an error, I probably forgot to run composer install
+require_once ROOT.'/vendor/autoload.php'; #  if this line throw an error, I probably forgot to run composer install
 
 # AWS connection information
 // no longer needed with composer // define("AWS_PHAR","/usr/share/php5/aws.phar");
