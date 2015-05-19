@@ -1,6 +1,6 @@
 <?php
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 
 function getZbootaUsers($ddb) {
 # pass in dynamodb connection: result of connectDynamoDb()

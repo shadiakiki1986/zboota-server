@@ -1,6 +1,6 @@
 # Requirements
 * linux server with public IP and URL to be set in mobile app
- * check variable "ZBOOTA_SERVER_URL" in js/common.js and in etc/zboota-server-config-sample.php
+ * check variable "ZBOOTA_SERVER_URL" in js/common.js and in config-sample.php
 
 # Prerequisite steps
 ```
@@ -23,7 +23,7 @@ sudo mv phpunit.phar /usr/local/bin/phpunit
 * crontab -e # remove dropStale and syncAll
 
 ```
-sudo rm /etc/zboota-server-config.php 
+rm config.php  # from insatllation folder
 sudo rm /etc/apache2/conf-enabled/zboota-server.conf 
 sudo rm /etc/apache2/conf-available/zboota-server.conf 
 rm -rf ~/zboota-server

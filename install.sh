@@ -2,12 +2,13 @@
 # Check document INSTALL
 
 INSTALL_DIR=.
+CONFIG=$INSTALL_DIR/config.php
 
 apt-get install apache2 php5 php5-cli php5-curl apache2-utils
 
-cp $INSTALL_DIR/etc/zboota-server-config-sample.php /etc/zboota-server-config.php
-sed -i "s/abcdefghijklmnopqrstuvwxyz/`openssl rand -base32 18`/g" /etc/zboota-server-config.php
-vim /etc/zboota-server-config.php # edit parameters
+cp $INSTALL_DIR/config-sample.php $CONFIG
+sed -i "s/abcdefghijklmnopqrstuvwxyz/`openssl rand -base32 18`/g" $CONFIG
+vim $CONFIG # edit parameters
 
 cp $INSTALL_DIR/etc/apache2/conf-available/zboota-server-sample.conf /etc/apache2/conf-available/zboota-server.conf # Modify file if needed
 ln -s /etc/apache2/conf-available/zboota-server.conf /etc/apache2/conf-enabled/zboota-server.conf
@@ -30,5 +31,5 @@ echo '0 6 * * 1 php /home/ubuntu/zboota-server/scripts/backupTables.php >> /home
 crontab $tcf -u $SUDO_USER
 
 # Test
-wget --spider `grep ZBOOTA_SERVER_URL /etc/zboota-server-config.php | sed "s/^.*'\(http:\/\/[a-zA-Z\.]*\)'.*$/\1/g"`
+wget --spider `grep ZBOOTA_SERVER_URL $CONFIG | sed "s/^.*'\(http:\/\/[a-zA-Z\.]*\)'.*$/\1/g"`
 wget --spider `grep ZBOOTA_SERVER_URL $INSTALL_DIR/var/www/client/js/common.js | sed "s/^ZBOOTA_SERVER_URL=\"\(http:\/\/[a-zA-Z\.\/-]*\)\"$/\1/g"`

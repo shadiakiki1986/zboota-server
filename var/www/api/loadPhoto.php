@@ -5,7 +5,7 @@ header("Access-Control-Allow-Origin: *");
 # Example usage:
 # php loadPhoto.php f_5575748747.jpg
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/ZbootaS3Client.php';
 
 if(isset($argc) && $argc>1) {

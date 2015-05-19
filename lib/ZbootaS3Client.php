@@ -1,5 +1,5 @@
 <?php
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 include AWS_PHAR;
 use Aws\S3\S3Client;
 

@@ -14,7 +14,7 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'options') {
 	header('Access-Control-Request-Method: *');
 
 } else if(strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-	require_once '/etc/zboota-server-config.php';
+	require_once dirname(__FILE__).'/../../../config.php';
 	require_once ROOT.'/lib/uploadPhotoCore.php';
 
 

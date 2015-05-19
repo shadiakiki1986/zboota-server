@@ -2,7 +2,7 @@
 
 # To test with a different ROOT, uncomment the below
 # define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/ZbootaClient.php';
 
 class newUserTest extends PHPUnit_Framework_TestCase {

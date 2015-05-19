@@ -36,7 +36,7 @@ if($email==""||$pass==""||$lpns=="") {
 	throw new Exception("Please enter your email, password, and license plate numbers.\n");
 }
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/loginCore.php';
 
 // test lpns is valid

@@ -1,6 +1,6 @@
 <?php
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/mapArea.php';
 require_once ROOT.'/lib/syncCoreIsf.php';
 require_once ROOT.'/lib/syncCorePml.php';

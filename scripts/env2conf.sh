@@ -1,6 +1,6 @@
 #!/bin/bash
 # Generates php config file from environment variables
-# Output to be put into /etc/zboota-server-config.php
+# Output to be put into config.php in the zboota-server root folder
 #
 # export ZBOOTA_SERVER_AWS_KEY=123
 # export ZBOOTA_SERVER_AWS_ACCESS=123

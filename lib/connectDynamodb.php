@@ -1,6 +1,6 @@
 <?php
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 // no more needed after composer // include AWS_PHAR;
 use Aws\DynamoDb\DynamoDbClient;
 

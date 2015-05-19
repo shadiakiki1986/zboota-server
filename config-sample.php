@@ -1,10 +1,10 @@
 <?php
 
-# Copy this file to /etc/zboota-server-config.php
+# Copy this file to config.php in the root folder of the installation
 # and edit it with the proper parameter values
 
 # Root directory of installation of zboota-server
-define("ROOT", "/home/shadi/Development/zboota-server");
+define("ROOT", dirname(__FILE__));
 
 # AWS connection information
 // no longer needed with composer // define("AWS_PHAR","/usr/share/php5/aws.phar");

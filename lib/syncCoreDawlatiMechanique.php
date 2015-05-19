@@ -2,7 +2,7 @@
 // Example 
 // var_dump(syncCoreDawlatiMechanique("B","123123","Private cars","1 - 10","2015"));
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/mapArea.php';
 require_once ROOT.'/lib/checkValidDawlatiMechanique.php';
 

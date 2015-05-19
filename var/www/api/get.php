@@ -35,7 +35,7 @@ header("Access-Control-Allow-Origin: *");
 */
 
 // define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/getCore.php';
 
 if(isset($argc) && $argc>=2) {

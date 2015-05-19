@@ -1,6 +1,6 @@
 <?php
 define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 define("AWS_PHAR","/usr/share/php5/aws.phar");
 require_once AWS_PHAR;
 echo ROOT."\n";

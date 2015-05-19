@@ -1,6 +1,6 @@
 <?php
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/connectDynamodb.php';
 require_once ROOT.'/lib/syncCore.php';
 require_once ROOT.'/lib/syncSave.php';

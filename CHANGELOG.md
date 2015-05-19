@@ -1,14 +1,27 @@
 # Ver 0.0.3
+2015-05-19
+* noticed that my travis-ci was very slow to re-build
+ * read http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
+ * learned that it may be because of my sudo: required
+ * refactored include /etc/zboota...config.php to use a config file in the root folder
+ * set sudo: false in travis yml file
+* also, since I''m still getting the tls alert, I''m trying to add the ssh_known_hosts addon option to travis yml
+ * http://docs.travis-ci.com/user/ssh-known-hosts/
+* setting aws version to 2.7.* in composer.json didn''t help resolve the tls alert issue
+ * setting to >=2.7.* since that''s the minimum version for which the passFail update works (check unit test)
+ * actually setting to >=2.7.27 since the asterisk is not accepted as a version number in composer
+* added composer self-update to travis yml file
+
 2015-05-18
 * added/improved some tests
 * added travis.yml for CI with travis-ci.org
 * incorporated composer for phpunit, aws (instead of AWS_PHAR)
 * replaced several instances of putItem with updateItem
 * after finally getting around the gnu tls error on travis-ci connecting to dynamodb (soln was to change from us-west-2 to us-east-1)
-** i ran the unit tests locally and corrected them by connecting to us-east-1 (after manually creating the tables)
-** i also added tests for newly created accounts
-** using aws >=8.4 so that the update of passfail works
-** travis only testing php 5.5 since that was irrelevant to the gnu tls issue
+ * i ran the unit tests locally and corrected them by connecting to us-east-1 (after manually creating the tables)
+ * i also added tests for newly created accounts
+ * using aws >=8.4 so that the update of passfail works
+ * travis only testing php 5.5 since that was irrelevant to the gnu tls issue
 
 2015-05-17
 * photos: moving from using local folder to S3 bucket + tested

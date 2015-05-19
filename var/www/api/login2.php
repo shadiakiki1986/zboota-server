@@ -32,7 +32,7 @@ if(isset($argc) && $argc>1) {
 	$pass=$_GET["pass"];
 }
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/loginCore.php';
 require_once ROOT.'/lib/getCore.php';
 

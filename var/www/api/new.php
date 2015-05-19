@@ -29,7 +29,7 @@ if(isset($argc) && $argc>1) {
 	$email=$_POST["email"];
 }
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/ZbootaClient.php';
 
 try {

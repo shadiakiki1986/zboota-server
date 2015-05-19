@@ -1,6 +1,6 @@
 <?php
 
-require_once '/etc/zboota-server-config.php';
+require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/ZbootaS3Client.php';
 
 # From http://www.sanwebe.com/2012/05/ajax-image-upload-and-resize-with-jquery-and-php
