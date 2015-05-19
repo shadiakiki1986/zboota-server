@@ -14,7 +14,8 @@ if [ -z "$MAILGUN_FROM" ]; then echo "Please set env vars. Check scripts/env2con
 if [ -z "$MAILGUN_PUBLIC_KEY" ]; then echo "Please set env vars. Check scripts/env2conf.sh"; exit -1; fi
 
 echo "<?php"
-echo "define('ROOT','/home/travis/build/shadiakiki1986/zboota-server');"
+echo "define('ROOT', dirname(__FILE__));"
+echo "require ROOT.'/vendor/autoload.php';"
 echo "define('AWS_KEY','$ZBOOTA_SERVER_AWS_KEY');"
 echo "define('AWS_SECRET','$ZBOOTA_SERVER_AWS_ACCESS');"
 echo "define('AWS_REGION','$ZBOOTA_SERVER_AWS_REGION');"
