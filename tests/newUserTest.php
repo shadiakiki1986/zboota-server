@@ -11,7 +11,9 @@ class newUserTest extends PHPUnit_Framework_TestCase {
 	if(AWS_REGION!="us-east-1") {
 		// Stop here and mark this test as incomplete.
 		$this->markTestIncomplete(
-		 "Please only run this test in us-east-1.\nDo this by replacing us-west-2 with us-east-1 in config.php in the root folder.\nRemember to revert back to us-west-2 for production"
+		 "Please only run this test in us-east-1.\n
+		  Do this by replacing us-west-2 with us-east-1 in config.php in the root folder.\n
+		  Remember to revert back to us-west-2 for production"
 		);
 	}
 

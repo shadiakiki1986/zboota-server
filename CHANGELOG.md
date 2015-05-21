@@ -1,4 +1,7 @@
 # Ver 0.0.3
+2015-05-21
+* added deleteTestUser for the sake of automated testing of zboota-app
+
 2015-05-19
 * noticed that my travis-ci was very slow to re-build
  * read http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
