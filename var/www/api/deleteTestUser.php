@@ -12,5 +12,6 @@ require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/ZbootaClient.php';
 
 $zc=new ZbootaClient("dummy");
+$zc->connect();
 $zc->deleteTestUser();
 echo "{}";

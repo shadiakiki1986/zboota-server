@@ -18,7 +18,7 @@ class ZbootaClientTest extends PHPUnit_Framework_TestCase
 		);
 	}
 
-	$zc=new ZbootaClient("shadiakiki1986@hotmail.com");
+	$zc=new ZbootaClient("shadi_akiki_1986@hotmail.com");
 	$zc->connect();
 	if(count($zc->entry)==0) {
 		// create user

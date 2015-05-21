@@ -140,7 +140,7 @@ function newUser() {
 function deleteTestUser() {
 	$this->client->deleteItem(array(
 	    'TableName' => 'zboota-users',
-	    'Key' => array( 'email'      => array('S' => "shadiakiki1986@hotmail.com") )
+	    'Key' => array( 'email'      => array('S' => "shadi_akiki_1986@hotmail.com") )
 	));
 }
 
