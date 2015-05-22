@@ -19,3 +19,6 @@ These are misc notes for myself
  * sed -i "s/require_once '\/etc\/zboota-server-config.php';/require_once dirname(__FILE__).'\/..\/config.php';/g" test^C*.php
 * git revert an uncomitted file
  * git checkout path/to/file
+* Delete git branch
+ * Local: git branch -d lastsuccess
+ * Remote: git push origin --delete lastsuccess
