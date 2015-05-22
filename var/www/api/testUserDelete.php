@@ -14,7 +14,11 @@ require_once ROOT.'/lib/ZbootaTestUser.php';
 $ztu=new ZbootaTestUser();
 if($ztu->exists()) {
 	$ztu->deleteTestUser();
-	echo "Deleted";
+	if(!$ztu->exists()) {
+		echo "Deleted";
+	} else {
+		echo "Failed to delete";
+	}
 } else {
 	echo "Inexistant";
 }
