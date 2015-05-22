@@ -3,9 +3,9 @@
 # To test with a different ROOT, uncomment the below
 # define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
 require_once dirname(__FILE__).'/../config.php';
-require_once ROOT.'/lib/ZbootaClient.php';
+require_once ROOT.'/lib/ZbootaTestUser.php';
 
-class ZbootaClientTest extends PHPUnit_Framework_TestCase
+class ZbootaTestUserTest extends PHPUnit_Framework_TestCase
 {
 
     public function testDeleteTestUser()
@@ -18,17 +18,15 @@ class ZbootaClientTest extends PHPUnit_Framework_TestCase
 		);
 	}
 
-	$zc=new ZbootaClient("shadi_akiki_1986@hotmail.com");
-	$zc->connect();
-	if(count($zc->entry)==0) {
-		// create user
-		$zc->newUser();
+	$ztu=new ZbootaTestUser();
+	if(!$ztu->exists()) {
+		$ztu->create();
 	}
-	$zc->connect();
-	$this->assertTrue(count($zc->entry)!=0); // exists now for sure
-	$zc->deleteTestUser();
-	$zc->connect();
-	$this->assertTrue(count($zc->entry)==0); // exists not
+	$this->assertTrue($ztu->exists()); // exists now for sure
+	$this->assertTrue(strlen($ztu->password())==5);
+
+	$ztu->deleteTestUser();
+	$this->assertTrue(!$ztu->exists()); // exists now for sure
     }
 
 }

@@ -137,11 +137,4 @@ function newUser() {
 	$this->initiateAccount();
 }
 
-function deleteTestUser() {
-	$this->client->deleteItem(array(
-	    'TableName' => 'zboota-users',
-	    'Key' => array( 'email'      => array('S' => "shadi_akiki_1986@hotmail.com") )
-	));
-}
-
 }

@@ -1,4 +1,9 @@
 # Ver 0.0.3
+2015-05-22
+* split out test user stuff into separate class
+* added getpassword api hook for test user
+* renamed deleteTestUser to testUserDelete
+
 2015-05-21
 * added deleteTestUser for the sake of automated testing of zboota-app
 

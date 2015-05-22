@@ -9,9 +9,7 @@ header("Access-Control-Allow-Origin: *");
 */
 
 require_once dirname(__FILE__).'/../../../config.php';
-require_once ROOT.'/lib/ZbootaClient.php';
+require_once ROOT.'/lib/ZbootaTestUser.php';
 
-$zc=new ZbootaClient("dummy");
-$zc->connect();
-$zc->deleteTestUser();
-echo "{}";
+$ztu=new ZbootaTestUser();
+echo $ztu->password(); // will fail if not exists
