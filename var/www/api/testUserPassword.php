@@ -12,4 +12,7 @@ require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/ZbootaTestUser.php';
 
 $ztu=new ZbootaTestUser();
+if(!$ztu->exists()) {
+	$ztu->create();
+}
 echo $ztu->password(); // will fail if not exists
