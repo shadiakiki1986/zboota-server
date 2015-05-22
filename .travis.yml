@@ -16,8 +16,5 @@ before_script:
 - bash scripts/env2conf.sh > /dev/null && bash scripts/env2conf.sh > config.php
 addons:
   ssh_known_hosts:
-  - https://dynamodb.us-east-1.amazonaws.com/
-  - https://dynamodb.us-west-2.amazonaws.com/
-branches:
-  only:
-    - lastsuccess
+  - dynamodb.us-east-1.amazonaws.com
+  - dynamodb.us-west-2.amazonaws.com
