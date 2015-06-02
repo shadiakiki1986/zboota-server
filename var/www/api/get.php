@@ -37,6 +37,7 @@ header("Access-Control-Allow-Origin: *");
 // define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
 require_once dirname(__FILE__).'/../../../config.php';
 require_once ROOT.'/lib/getCore.php';
+require_once ROOT.'/lib/errorInLpns.php';
 
 if(isset($argc) && $argc>=2) {
 	$lpns=$argv[1];
@@ -54,5 +55,13 @@ if($lpns=="") {
 }
 
 $lpns=json_decode($lpns,true);
+
+// verify
+$eilpns=errorInLpns($lpns);
+if(!!$eilpns) {
+	echo json_encode(array('error'=>$eilpns);
+	return;
+}
+
 $data=getCore($lpns,$force);
 echo json_encode($data);

@@ -5,18 +5,15 @@ require_once ROOT.'/lib/mapArea.php';
 require_once ROOT.'/lib/syncCoreIsf.php';
 require_once ROOT.'/lib/syncCorePml.php';
 require_once ROOT.'/lib/syncCoreDawlatiMechanique.php';
+require_once ROOT.'/lib/errorInLpns.php';
 
 function syncCore($lpns) {
 
 	$mapIsf=mapAreaIsf();
 	$mapPml=mapAreaPml();
 
-	# sanity check
-	foreach($lpns as $v) {
-		if(!in_array($v['a'],array_keys($mapIsf)) | !in_array($v['a'],array_keys($mapPml))) {
-			throw new Exception("Unsupported area code {$v['a']}");
-		}
-	}
+	$eil=errorInLpns($lpns,true);
+	if(!!$eil) throw new Exception($eil);
 
 	# core retrieval
 	$data=array();

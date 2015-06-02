@@ -1,6 +1,8 @@
 # Ver 0.0.3
 2015-06-02
 * consolidated statistics in class and added weekly email
+* sanity check on area and number in the get.php and get2.php api hooks
+* refactored syncCore to use new function errorInLpns
 
 2015-05-28
 * added statistics on returning cars (i.e. anonymous users)
