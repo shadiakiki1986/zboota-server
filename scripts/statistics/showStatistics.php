@@ -7,7 +7,7 @@ require_once ROOT.'/lib/mailSend.php';
 $chosenAllowed=["all","summary","nocars","locked","mechCars","mechUsers","orphans","photos","retCars","retUsers"];
 
 function showUsage() {
-	echo "Usage: php listSummary.php (console|email) (".implode("|",$chosenAllowed).")\n";
+	echo "Usage: php listSummary.php (console|email) (".implode("|",$GLOBALS['chosenAllowed']).")\n";
 	exit;
 }
 
