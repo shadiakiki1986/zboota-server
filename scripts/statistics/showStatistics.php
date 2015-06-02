@@ -67,5 +67,5 @@ if($format=="email") {
 	ob_end_clean();
 	$myStr=str_replace("\n","<br>\n",$myStr);
 
-	mailSend("shadiakiki1986@gmail.com", "Zboota statistics", $myStr);
+	mailSend("shadiakiki1986@gmail.com", "Zboota statistics ".date("Y-m-d"), $myStr);
 }
