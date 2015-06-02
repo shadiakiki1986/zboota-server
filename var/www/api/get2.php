@@ -68,7 +68,7 @@ $lpns=json_decode($lpns,true);
 // verify
 $eilpns=errorInLpns($lpns);
 if(!!$eilpns) {
-	echo json_encode(array('error'=>$eilpns);
+	echo json_encode(array('error'=>$eilpns));
 	return;
 }
 
