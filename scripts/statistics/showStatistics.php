@@ -7,7 +7,7 @@ require_once ROOT.'/lib/mailSend.php';
 $chosenAllowed=["all","summary","nocars","locked","mechCars","mechUsers","orphans","photos","retCars","retUsers"];
 
 function showUsage() {
-	echo "Usage: php listSummary.php (console|email) (".implode("|",$chosenAllowed).")\n";
+	echo "Usage: php listSummary.php (console|email) (".implode("|",$GLOBALS['chosenAllowed']).")\n";
 	exit;
 }
 
@@ -67,5 +67,5 @@ if($format=="email") {
 	ob_end_clean();
 	$myStr=str_replace("\n","<br>\n",$myStr);
 
-	mailSend("shadiakiki1986@gmail.com", "Zboota statistics", $myStr);
+	mailSend("shadiakiki1986@gmail.com", "Zboota statistics ".date("Y-m-d"), $myStr);
 }
