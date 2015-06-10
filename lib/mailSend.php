@@ -20,5 +20,6 @@ function mailSend($to,$subj,$body) {
 
 	if($result=="Forbidden") throw new Exception("Forbidden to send email. Did you update the mailgun parameters in config.php?\n");
 
-	return json_decode($result,true)['message']=="Queued. Thank you.";
+	$r=json_decode($result,true);
+	return $r['message']=="Queued. Thank you.";
 }

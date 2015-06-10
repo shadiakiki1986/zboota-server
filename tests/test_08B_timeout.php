@@ -7,5 +7,6 @@ require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/getCore.php';
 
 echo "Make sure you're running this after running test_08A\n";
-$x=getCore(array(array('a'=>"B",'n'=>"138288",'t'=>"Private cars",'hp'=>"1 - 10",'y'=>"2015")),false)["B/138288"];
+$x=getCore(array(array('a'=>"B",'n'=>"138288",'t'=>"Private cars",'hp'=>"1 - 10",'y'=>"2015")),false);
+$x=$x["B/138288"];
 if(assert($x["pml"]!="Not available" && $x["isf"]!="Not available" && $x["dm"]!="Not available")) echo("Test passed\n");

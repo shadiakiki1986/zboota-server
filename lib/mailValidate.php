@@ -10,5 +10,6 @@ function mailValidate($email) {
 	$result = curl_exec($curl);
 	curl_close($curl);
 
-	return json_decode($result,true)['is_valid'];
+	$r=json_decode($result,true);
+	return $r['is_valid'];
 }
