@@ -14,7 +14,7 @@ class StatisticsTest extends PHPUnit_Framework_TestCase
         $tgrc=$ddb->getReturningCars();
 
         $this->assertTrue(count($tgrc)>0);
-	$this->asserTrue($ddb->avgdif($tgrc)!=0);
+	$this->assertTrue($ddb->avgdif($tgrc)!=0);
 
     }
 
