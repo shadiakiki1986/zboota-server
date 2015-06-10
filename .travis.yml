@@ -11,7 +11,7 @@ env:
   - secure: LBK5xmPYBsqj19D9x0YBB4m+DSh7eZq55glJmBjn03FPU84FNvW4XbxxqqTmrMcew1gtIvqtfDOlpMOFSGwtbf89DKgkp1BFk9a5i5VJ5Nl4SGGnwl/caI6ubEKxa7G2bvbPi0qzaYJfRrPtysyhDNvvnV91955BpaD2a0vVvXtzFTnwlckYEC6pjsFSJfUpKQDAANa7psW34nMlDwUZFPXcEgO9ip9pTwB4YE5UWm65552bXePXcvjRFB3zVDE0JYI9uX5EQ3xsy9rKHgCp2CQlwXvJ0tjCXsWvPdt2I1BwmWo+dhGoeNAB4xpqEpTIZl9mFaXBNGUvy+kZHrWi4+7CG/oYxK6Hq6Jo3j2BBfAvhvyw2Vd4PK5/ojHiTZ5VFWwuPGLXeW3PrGanbal+nL9JWOUfHk5WgPSdWBInzuKZywP/T0Pl68Yxuik6AsLnlgRfuqIlhwX4V/XsI2feCvLLnhwY3TknmnB4uh2lYxBsj4Ltoiwmm1owx7NVkVf1ETw+twBxbJEomp/uBA0q4XEzXbw2fuvwtvRHR3xUWDZfMXt0BRQjP5PfPYyNtF0zppwGzYpBwtXOPzhrRbCyMp0xjrzq1exY5mECzyN/8NE/F6M9p/x2s3GpZVsqAc10PEgQcq1/zxdktZfZmsrS4dsyyJTL7YtGcBPcoLvtpOc=
 sudo: required
 before_script:
-- echo '<?php $cv=curl_version(); if(strcmp($cv["version"],"7.42.1")>0) throw new Exception("No need for the download and installation of curl 7.42 and gnutls 3.1 on travis-ci (and not even sudo)"); ?>' | /usr/bin/php5
+- echo '<?php $cv=curl_version(); if(strcmp($cv["version"],"7.42.1")>0) throw new Exception("No need for the download and installation of curl 7.42 and gnutls 3.1 on travis-ci (and not even sudo)"); ?>' | php
 - wget https://s3-us-west-2.amazonaws.com/zboota-server/travis-ci+debian+packages/nettle_2.7.1-1_amd64.deb && sudo dpkg -i nettle_2.7.1-1_amd64.deb
 - sudo ldconfig
 - wget https://s3-us-west-2.amazonaws.com/zboota-server/travis-ci+debian+packages/gnutls_3.1.28-1_amd64.deb && sudo dpkg -i gnutls_3.1.28-1_amd64.deb
@@ -27,3 +27,4 @@ before_script:
 - composer self-update
 - composer install
 - bash scripts/env2conf.sh > /dev/null && bash scripts/env2conf.sh > config.php
+script: /usr/bin/php5 phpunit.phar tests/
