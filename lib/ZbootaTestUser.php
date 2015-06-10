@@ -7,9 +7,11 @@ require_once ROOT.'/lib/ZbootaClient.php';
 class ZbootaTestUser {
 
 	var $client;
+	var $region;
 
 	function __construct($reg=AWS_REGION) {
 		$this->client=connectDynamoDb($reg);
+		$this->region=$reg;
 	}
 
 	function deleteTestUser() {
@@ -31,7 +33,7 @@ class ZbootaTestUser {
 		if($this->exists()) {
 			throw new Exception("Already exists");
 		} else {
-			$zc=new ZbootaClient("shadi_akiki_1986@hotmail.com");
+			$zc=new ZbootaClient("shadi_akiki_1986@hotmail.com","",$this->region);
 			$zc->connect();
 			// create user
 			$zc->newUser();
