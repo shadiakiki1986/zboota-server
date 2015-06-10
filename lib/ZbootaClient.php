@@ -12,14 +12,16 @@ var $email;
 var $pass;
 var $client;
 var $entry;
+var $region;
 
-function ZbootaClient($email,$pass="") {
+function ZbootaClient($email,$pass="",$reg=AWS_REGION) {
 	$this->email=$email;
 	$this->pass=$pass;
+	$this->region=$reg;
 }
 
 function connect() {
-	$this->client=connectDynamoDb();
+	$this->client=connectDynamoDb($this->region);
 	$this->entry=$this->client->getItem(array(
 	    'TableName' => 'zboota-users',
 	    'Key' => array( 'email'      => array('S' => $this->email) )

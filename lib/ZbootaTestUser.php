@@ -8,8 +8,8 @@ class ZbootaTestUser {
 
 	var $client;
 
-	function __construct() {
-		$this->client=connectDynamoDb();
+	function __construct($reg=AWS_REGION) {
+		$this->client=connectDynamoDb($reg);
 	}
 
 	function deleteTestUser() {

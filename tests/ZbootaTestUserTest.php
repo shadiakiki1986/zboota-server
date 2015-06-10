@@ -10,15 +10,7 @@ class ZbootaTestUserTest extends PHPUnit_Framework_TestCase
 
     public function testDeleteTestUser()
     {
-	if(AWS_REGION!="us-west-2") {
-		// Stop here and mark this test as incomplete.
-		$this->markTestIncomplete(
-		 "Please only run this test in us-west-2.\n
-		  Refer to config.php in the root folder."
-		);
-	}
-
-	$ztu=new ZbootaTestUser();
+	$ztu=new ZbootaTestUser("us-west-2");
 	if(!$ztu->exists()) {
 		$ztu->create();
 	}
