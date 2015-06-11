@@ -20,8 +20,7 @@ before_script:
 #- sudo apt-get remove libneon27-gnutls
 - wget https://s3-us-west-2.amazonaws.com/zboota-server/travis-ci+debian+packages/curl_7.42.1-1_amd64.deb && sudo dpkg -i curl_7.42.1-1_amd64.deb
 - sudo ldconfig
-- wget https://phar.phpunit.de/phpunit.phar
-- chmod +x phpunit.phar
+- wget https://s3-us-west-2.amazonaws.com/zboota-server/travis-ci+debian+packages/phpunit.phar # https://phar.phpunit.de/phpunit.phar
 - sudo apt-get update
 - sudo apt-get install make php5-cli php5-curl
 - composer self-update

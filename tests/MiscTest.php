@@ -19,7 +19,9 @@ class MiscTest extends PHPUnit_Framework_TestCase
 	$this->assertTrue(syncCoreIsf($mapIsf["G"],"456265")=="08/12/2012");
 
 	$mapPml=mapAreaPml();
-	$this->assertTrue(syncCorePml($mapPml["G"],"456265")=="Not available");
+	$xx=syncCorePml($mapPml["G"],"456265");
+	var_dump($xx);
+	$this->assertTrue($xx=="Not available");
 	$this->assertTrue(syncCorePml($mapPml["M"],"239296")=="Not available");
 
 	$xx=syncCoreDawlatiMechanique("B","123123","Private cars","1 - 10","2015");
