@@ -20,8 +20,12 @@ class MiscTest extends PHPUnit_Framework_TestCase
 
 	$mapPml=mapAreaPml();
 	$xx=syncCorePml($mapPml["G"],"456265");
-	var_dump($xx);
-	$this->assertTrue($xx=="Not available");
+	if($xx=="Not available") {
+		$this->markTestIncomplete('It seems that the PML server is overloaded or unavailable');
+	} else {
+		$this->assertTrue($xx=="None");
+	}
+
 	$this->assertTrue(syncCorePml($mapPml["M"],"239296")=="Not available");
 
 	$xx=syncCoreDawlatiMechanique("B","123123","Private cars","1 - 10","2015");
