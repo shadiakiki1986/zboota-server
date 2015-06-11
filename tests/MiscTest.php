@@ -27,7 +27,6 @@ class MiscTest extends PHPUnit_Framework_TestCase
 	}
 
 	$xx=syncCorePml($mapPml["M"],"239296");
-var_dump($xx);
 	if($xx=="Not available") {
 		$this->markTestIncomplete('It seems that the PML server is overloaded or unavailable');
 	} else {
