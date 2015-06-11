@@ -1,7 +1,6 @@
 <?php
 
-//define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
-define("MY_CURL_TIMEOUT", 1); // Development ROOT
+define("MY_CURL_TIMEOUT", 1);
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/getCore.php';
 

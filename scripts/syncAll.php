@@ -1,6 +1,5 @@
 <?php
 
-//define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/syncCore.php';
 require_once ROOT.'/lib/syncSave.php';

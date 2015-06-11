@@ -2,7 +2,6 @@
 // Test that getCore will still update with the configured MY_CURL_TIMEOUT
 // including the case where dynamodb stored Not available after test_08A
 
-//define("ROOT", "/home/ubuntu/Development/zboota-server"); // Development ROOT
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/getCore.php';
 
