@@ -1,14 +1,15 @@
 <?php
 
-function syncCoreIsf($a,$n) {
+function syncCoreIsf($a,$n,$timeout=MY_CURL_TIMEOUT) {
+ // pass timeout in seconds, and convert to milliseconds below
 
 	# Get cookie
 	$cjn=tempnam('/tmp','cookie');
 
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, MY_CURL_TIMEOUT);
-	curl_setopt($curl, CURLOPT_TIMEOUT, MY_CURL_TIMEOUT);
+	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT_MS, $timeout*1000);
+	curl_setopt($curl, CURLOPT_TIMEOUT_MS, $timeout*1000);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
 	curl_setopt($curl, CURLOPT_FRESH_CONNECT, TRUE);
 	curl_setopt($curl, CURLOPT_HEADER, FALSE);

@@ -6,7 +6,7 @@ require_once ROOT.'/lib/syncCore.php';
 require_once ROOT.'/lib/syncSave.php';
 
 # retrieval from dynamo db table
-function getCore($lpns,$force=false) {
+function getCore($lpns,$force=false,$timeout=MY_CURL_TIMEOUT) {
 	$ddb=connectDynamoDb();
 	$data=array();
 	foreach($lpns as $v) {
@@ -35,7 +35,7 @@ function getCore($lpns,$force=false) {
 //var_dump($v,$ud['Item'],$force);
 		if(count($ud['Item'])==0 || $force) {
 			// if not found, retrieve
-			$ud=syncSave(syncCore(array($k=>$v)),true);
+			$ud=syncSave(syncCore(array($k=>$v),$timeout),true);
 
 			// repeat retrieval
 			$ud=$ddb->getItem(array(

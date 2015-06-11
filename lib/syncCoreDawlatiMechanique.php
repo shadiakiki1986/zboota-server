@@ -6,15 +6,16 @@ require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/mapArea.php';
 require_once ROOT.'/lib/checkValidDawlatiMechanique.php';
 
-function syncCoreDawlatiMechanique($a,$n,$t,$hp,$y) {
+function syncCoreDawlatiMechanique($a,$n,$t,$hp,$y,$timeout=MY_CURL_TIMEOUT) {
+ // pass timeout in seconds, and convert to milliseconds below
 
 	# Get cookie
 	$cjn=tempnam('/tmp','cookie');
 
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, MY_CURL_TIMEOUT);
-	curl_setopt($curl, CURLOPT_TIMEOUT, MY_CURL_TIMEOUT);
+	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT_MS, $timeout*1000);
+	curl_setopt($curl, CURLOPT_TIMEOUT_MS, $timeout*1000);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
 	curl_setopt($curl, CURLOPT_FRESH_CONNECT, TRUE);
 	curl_setopt($curl, CURLOPT_HEADER, FALSE);
@@ -92,27 +93,43 @@ function syncCoreDawlatiMechanique($a,$n,$t,$hp,$y) {
 	libxml_use_internal_errors(false);
 	$finder = new DomXPath($dom);
 
-	$m0 = trim($finder->query('//table[@id="zResult"]/tr[1]/td[1]')->item(0)->nodeValue);
-	if($m0=="There are no results matching the specifications you've entered...") {
-		//throw new Exception($m0);
-		$dm=$m0;
-	} else {
-		$m2 = trim($finder->query('//table[@id="zResult"]/tr[2]/td[1]/font/b/text()')->item(0)->nodeValue);
-		$m2=number_format($m2);
-		$m1 = trim($finder->query('//table[@id="zResult"]/tr[3]/td[1]/font/b/text()')->item(0)->nodeValue);
-		$m3 = $finder->query('//table[@id="zResult"]/tr[4]/td[1]/font/b/text()');
-		if($m3->length==0) {
-			$m3=true;
+	$m0 = $finder->query('//table[@id="zResult"]/tr[1]/td[1]');
+	if($m0->length > 0) {
+		$m0 = trim($m0->item(0)->nodeValue);
+		if($m0=="There are no results matching the specifications you've entered...") {
+			//throw new Exception($m0);
+			return $m0;
 		} else {
-			$m3 = trim($finder->query('//table[@id="zResult"]/tr[4]/td[1]/font/b/text()')->item(0)->nodeValue);
-			$m3 = ($m3!="Your vehicle is not subject to the Mandatory Vehicle Inspection");
+			$m2 = trim($finder->query('//table[@id="zResult"]/tr[2]/td[1]/font/b/text()')->item(0)->nodeValue);
+			$m2=number_format($m2);
+			$m1 = trim($finder->query('//table[@id="zResult"]/tr[3]/td[1]/font/b/text()')->item(0)->nodeValue);
+			$m3 = $finder->query('//table[@id="zResult"]/tr[4]/td[1]/font/b/text()');
+			if($m3->length==0) {
+				$m3=true;
+			} else {
+				$m3 = trim($finder->query('//table[@id="zResult"]/tr[4]/td[1]/font/b/text()')->item(0)->nodeValue);
+				$m3 = ($m3!="Your vehicle is not subject to the Mandatory Vehicle Inspection");
+			}
+			// return
+			$dm=array("amount"=>$m2,"month"=>$m1,"inspection"=>$m3);
+			return sprintf("%s LL, due in %s, mandatory inspection: %s",$dm["amount"],$dm['month'],($dm['inspection']?"required":"not required"));
 		}
-		// return
-		$dm=array("amount"=>$m2,"month"=>$m1,"inspection"=>$m3);
-		$dm=sprintf("%s LL, due in %s, mandatory inspection: %s",$dm["amount"],$dm['month'],($dm['inspection']?"required":"not required"));
+	} else {
+		// check if got server error on forbidden access
+		$m02 = $finder->query('//h3[@class="portlet-msg-error"]');
+		if($m02) {
+			$m02 = trim($m02->item(0)->nodeValue);
+			if($m02=="Forbidden") {
+				return "Not available";
+			} else {
+				// Not sure what to make of this
+				return "Not available"; //Ma 3am nle2e hal siyyara lyom. Please rja3 jarreb ba3d shway. Sorry :/";
+			}
+		} else {
+			// Not sure what to make of this
+			return "Not available"; //Did you enter your car specifications correctly?";
+		}
 	}
-
-	return $dm;
 }
 
 

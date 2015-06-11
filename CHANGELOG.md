@@ -1,4 +1,9 @@
 # Ver 0.0.3
+2015-06-11
+* dropped all comment references to changing the root variable to development (was outdated since change to config.php in root folder)
+* consolidated tests into phpunit test MiscTest.php
+* also moved S3client tests to phpunit test
+
 2015-06-02
 * consolidated statistics in class and added weekly email
 * sanity check on area and number in the get.php and get2.php api hooks
