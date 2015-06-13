@@ -18,14 +18,24 @@ li:before {
   padding-right: 5px;
 }
 </style>
+</head>
+<body>
+<img src="img/logo-180.png" alt="Logo" >
+<h1>Yet Another Zboota App server</h1>
+<p>	This is the server side of my zboota app.
+	<div id="response">
+	</div>
+	<h3>Status</h3>
+	<ul>
+	<li>Ping: <span id="status1">N/A</span></li>
+	<li>Anonymous retrieve: <span id="status2">N/A</span></li>
+	<li>Login: <span id="status3">N/A</span></li>
+	</ul>
+</p>
 <script>
 (function() {
-var req;
-
-req = new XMLHttpRequest();
-
-req.onreadystatechange = function() {
- var cType;
+var req0 = new XMLHttpRequest();
+req0.onreadystatechange = function() {
  if (this.readyState == 4) {
  if (this.status != 200) {
     console.log('Error : Status '+this.status+' returned.');
@@ -36,19 +46,42 @@ req.onreadystatechange = function() {
   }
  }
 }
-req.open('GET', 'http://genesis.akikieng.com/zboota-server/api/statistics.php', true);
-req.send(null);
+req0.open('GET', 'http://genesis.akikieng.com/zboota-server/api/statistics.php', true);
+req0.send(null);
+//-------------------------------------------------
+var req1 = new XMLHttpRequest();
+req1.onreadystatechange = function() {
+ document.getElementById('status1').innerHTML="Pending";
+ if (this.readyState == 4) document.getElementById('status1').innerHTML = this.status!=200 ? "Error" : "Working";
+}
+req1.open('GET', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
+req1.send(null);
+//-------------------------------------------------
+var req2 = new XMLHttpRequest();
+req2.onreadystatechange = function() {
+ document.getElementById('status2').innerHTML="Pending";
+ if (this.readyState == 4) {
+   if (this.status != 200) {
+     document.getElementById('status2').innerHTML = "Error 1";
+   } else {
+     if(this.responseText=="") {
+       document.getElementById('status2').innerHTML = "Error 2";
+     } else {
+       rt=JSON.parse(this.responseText);
+       document.getElementById('status2').innerHTML = rt.pml=="None" && rt.n=="537005" && rt.a=="B" && rt.isf=="None" ? "Working" : "Error";
+     }
+   }
+  }
+
+}
+req2.open('POST', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
+req2.setRequestHeader("Content-type", "application/json");
+req2.send({"lpns":[{"a":"B","n":"537005"}]});
+
 }());
 
 </script>
-</head>
-<body>
-<img src="img/logo-180.png" alt="Logo" >
-<h1>Yet Another Zboota App server</h1>
-<p>	This is the server side of my zboota app.
-	<div id="response">
-	</div>
-</p>
+
 <h3>The zboota app itself allows you to ...</h3>
 <ul>
 <li>add multiple car plate numbers</li>

@@ -1,5 +1,11 @@
 <?php
+// Check comment in uploadPhotoAsDataUrl
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Access-Control-Allow-Origin");
+header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 
 /*
  As get.php  but for angular post
