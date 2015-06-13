@@ -17,19 +17,25 @@ li:before {
   content: "...";
   padding-right: 5px;
 }
+
+.fail { color: red; }
+.pend { color: orange; }
+.pass { color: green; }
+
 </style>
 </head>
 <body>
 <img src="img/logo-180.png" alt="Logo" >
 <h1>Yet Another Zboota App server</h1>
 <p>	This is the server side of my zboota app.
-	<div id="response">
-	</div>
-	<h3>Status</h3>
+	<h3>Status ...</h3>
 	<ul>
-	<li>Ping: <span id="status1">N/A</span></li>
-	<li>Anonymous retrieve: <span id="status2">N/A</span></li>
-	<li>Login: <span id="status3">N/A</span></li>
+	<li>Stats: <span id="response">-</span></li>
+	<li>Ping: <span id="status1" class="pend">N/A</span></li>
+	<li>Anonymous retrieve: <span id="status2" class="pend">N/A</span></li>
+	<li>Login via App: <span id="status3" class="pend">N/A</span></li>
+	<li>Login via API: <span id="status4" class="pend">N/A</span></li>
+	<li>CI status: <a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="travis-ci status"></a></li>
 	</ul>
 </p>
 <script>
@@ -41,8 +47,7 @@ req0.onreadystatechange = function() {
     console.log('Error : Status '+this.status+' returned.');
  } else {
     stats=JSON.parse(this.responseText);
-    document.getElementById('response').innerHTML = "It currently monitors "+stats.cars+" cars"+
-	" and has "+stats.notifications+" / "+stats.users+" registered users with outstanding violations.";
+    document.getElementById('response').innerHTML = stats.cars+" cars, " + stats.users+" registered users, " + stats.notifications+" alerted registered users";
   }
  }
 }
@@ -52,7 +57,10 @@ req0.send(null);
 var req1 = new XMLHttpRequest();
 req1.onreadystatechange = function() {
  document.getElementById('status1').innerHTML="Pending";
- if (this.readyState == 4) document.getElementById('status1').innerHTML = this.status!=200 ? "Error" : "Working";
+ if (this.readyState == 4) {
+   document.getElementById('status1').innerHTML = this.status!=200 ? "Error" : "Working";
+   document.getElementById('status1').className = this.status!=200 ? "fail" : "pass";
+ }
 }
 req1.open('GET', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
 req1.send(null);
@@ -63,20 +71,95 @@ req2.onreadystatechange = function() {
  if (this.readyState == 4) {
    if (this.status != 200) {
      document.getElementById('status2').innerHTML = "Error 1";
+     document.getElementById('status2').className = "fail";
    } else {
      if(this.responseText=="") {
        document.getElementById('status2').innerHTML = "Error 2";
+       document.getElementById('status2').className = "fail";
      } else {
        rt=JSON.parse(this.responseText);
-       document.getElementById('status2').innerHTML = rt.pml=="None" && rt.n=="537005" && rt.a=="B" && rt.isf=="None" ? "Working" : "Error";
+       if(rt.hasOwnProperty("error") || !rt.hasOwnProperty("B/1234")) {
+         document.getElementById('status2').innerHTML = "Error";
+         document.getElementById('status2').className = "fail";
+       } else {
+         rt=rt["B/1234"];
+         cond=rt.pml=="None" && rt.n=="1234" && rt.a=="B" && rt.isf=="None";
+         document.getElementById('status2').innerHTML = cond ? "Working" : "Error";
+         document.getElementById('status2').className = cond ? "pass" : "fail";
+       }
      }
    }
   }
 
 }
 req2.open('POST', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
-req2.setRequestHeader("Content-type", "application/json");
-req2.send({"lpns":[{"a":"B","n":"537005"}]});
+req2.send(JSON.stringify({"lpns":"[{\"a\":\"B\",\"n\":\"1234\",\"l\":\"test\",\"isf\":\"None\",\"pml\":\"None\"}]"}));
+//-------------------------------------------------
+var req3a = new XMLHttpRequest();
+req3a.onreadystatechange = function() {
+ document.getElementById('status3').innerHTML="Pending";
+ if (this.readyState == 4) {
+   if (this.status != 200) {
+     document.getElementById('status3').innerHTML = "Error 1";
+     document.getElementById('status3').className = "fail";
+     document.getElementById('status4').innerHTML = "Error 1";
+     document.getElementById('status4').className = "fail";
+   } else {
+     if(this.responseText=="") {
+       document.getElementById('status3').innerHTML = "Error 2";
+       document.getElementById('status3').className = "fail";
+       document.getElementById('status4').innerHTML = "Error 2";
+       document.getElementById('status4').className = "fail";
+     } else {
+        pass=this.responseText;
+        //-----------------------------
+        var req3 = new XMLHttpRequest();
+        req3.onreadystatechange = function() {
+         document.getElementById('status3').innerHTML="Pending";
+         if (this.readyState == 4) {
+           if (this.status != 200) {
+             document.getElementById('status3').innerHTML = "Error 3";
+             document.getElementById('status3').className = "fail";
+           } else {
+               document.getElementById('status3').innerHTML = this.responseText=="{}" ? "Working" : "Error";
+               document.getElementById('status3').className = this.responseText=="{}" ? "pass" : "fail";
+           }
+          }
+
+        }
+        req3.open('POST', 'http://genesis.akikieng.com/zboota-server/api/login.php', true);
+        params="email=shadi_akiki_1986@hotmail.com&pass="+pass;
+        req3.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req3.setRequestHeader("Content-length", params.length);
+        req3.setRequestHeader("Connection", "close");
+        req3.send(params);
+        //---------------------------
+        var req4 = new XMLHttpRequest();
+        req4.onreadystatechange = function() {
+         document.getElementById('status4').innerHTML="Pending";
+         if (this.readyState == 4) {
+           if (this.status != 200) {
+             document.getElementById('status4').innerHTML = "Error 3";
+             document.getElementById('status4').className = "fail";
+           } else {
+               cond="<table><tr><th>Letter</th><th>Number</th><th>Label</th><th>ISF</th><th>PML</th></tr></table>";
+               document.getElementById('status4').innerHTML = this.responseText==cond ? "Working" : "Error";
+               document.getElementById('status4').className = this.responseText==cond ? "pass" : "fail";
+           }
+          }
+
+        }
+        req4.open('GET', 'http://genesis.akikieng.com/zboota-server/api/login2.php?email=shadi_akiki_1986@hotmail.com&pass='+pass, true);
+        req4.send(params);
+
+     }
+   }
+  }
+
+}
+req3a.open('GET', 'http://genesis.akikieng.com/zboota-server/api/testUserPassword.php', true);
+req3a.send(null);
+//-------------------------------------------------
 
 }());
 

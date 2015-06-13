@@ -1,6 +1,6 @@
 # Ver 0.0.3
 2015-06-13
-* added some status indicators to the server home page (like travis-ci/status page)
+* moved tests of status to status indicators on the server home page (like travis-ci/status page)
 * added some more CORS headers to get2.php
 
 2015-06-11
