@@ -52,7 +52,7 @@ req0.onreadystatechange = function() {
     console.log('Error : Status '+this.status+' returned.');
  } else {
     stats=JSON.parse(this.responseText);
-    document.getElementById('response').innerHTML = stats.cars+" cars, " + stats.users+" registered users, " + stats.notifications+" alerted registered users";
+    document.getElementById('response').innerHTML = stats.cars+" cars, " + stats.users+" registered users (of which " + stats.notifications+" with outstanding tickets)";
 
     var plot1 = jQuery.jqplot ('carsLastGetInPast24HrsChart',
 	[stats.carsLastGetInPast24Hrs.nTotal,
