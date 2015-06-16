@@ -1,4 +1,9 @@
 # Ver 0.0.3
+2015-06-16
+* added notes on crontab requirement in INSTALL.md
+* added statistic on cars last got in 24 hrs and 1 hr
+* added uploading statistics on cars last got to dynamodb table for plotting as status (similar to travis-ci status)
+
 2015-06-13
 * moved tests of status to status indicators on the server home page (like travis-ci/status page)
 * added some more CORS headers to get2.php
