@@ -53,7 +53,6 @@ req0.onreadystatechange = function() {
  } else {
     stats=JSON.parse(this.responseText);
     document.getElementById('response').innerHTML = stats.cars+" cars, " + stats.users+" registered users, " + stats.notifications+" alerted registered users";
-    console.log(stats);
 
     var plot1 = jQuery.jqplot ('carsLastGetInPast24HrsChart',
 	[stats.carsLastGetInPast24Hrs.nTotal,
@@ -74,7 +73,7 @@ req0.onreadystatechange = function() {
             showDataLabels: true
           }
         }, 
-        legend: { show:true, location: 'e', labels: ["Total","New"] }
+        legend: { show:true, location: 'nw', labels: ["Total","New"] }
       }
     );
 

@@ -5,6 +5,7 @@
 * added uploading statistics on cars last got to dynamodb table for plotting as status (similar to travis-ci status)
 * integrated zboota-statistics into www/api/statistics.php
 * integrated zboota-statistics on nTotal and nNew from carsLastGetIn24 hrs into home page as a jqplot
+* added statistics from bkp file and backfilled usage stats for display on zboota-server home page
 
 2015-06-13
 * moved tests of status to status indicators on the server home page (like travis-ci/status page)
