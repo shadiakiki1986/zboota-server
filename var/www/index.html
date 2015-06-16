@@ -59,11 +59,14 @@ req0.onreadystatechange = function() {
 	[stats.carsLastGetInPast24Hrs.nTotal,
 	 stats.carsLastGetInPast24Hrs.nNew], 
       { 
-    axes:{xaxis:{
-        renderer:$.jqplot.DateAxisRenderer,
-        tickOptions:{formatString:'%b %#d\n%Y'},
-          tickInterval:'1 week'
-        }},
+	title: { text: "Number of cars checked daily" },
+	axes:{
+		xaxis:{
+		  renderer:$.jqplot.DateAxisRenderer,
+		 tickOptions:{formatString:'%b %#d\n%Y'},
+		  tickInterval:'1 week'
+		}
+	},
         seriesDefaults: {
           rendererOptions: {
             // Put data labels on the pie slices.
@@ -71,7 +74,7 @@ req0.onreadystatechange = function() {
             showDataLabels: true
           }
         }, 
-        legend: { show:true, location: 'e' }
+        legend: { show:true, location: 'e', labels: ["Total","New"] }
       }
     );
 
