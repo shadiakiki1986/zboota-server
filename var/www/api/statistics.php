@@ -34,21 +34,15 @@ $clgil24=$ddb->getIterator('Scan',array(
 $clgil24=iterator_to_array($clgil24);
 // flatten into structure suitable for jqplot
 $clgil24=array(
-	"statDate"=>array_map(
-		function($x) {
-			return $x["statDate"]["S"];
-		},
-		$clgil24
-	),
 	"nTotal"=>array_map(
 		function($x) {
-			return (int)$x["nTotal"]["N"];
+			return array($x["statDate"]["S"],(int)$x["nTotal"]["N"]);
 		},
 		$clgil24
 	),
 	"nNew"=>array_map(
 		function($x) {
-			return (int)$x["nNew"]["N"];
+			return array($x["statDate"]["S"],(int)$x["nNew"]["N"]);
 		},
 		$clgil24
 	)

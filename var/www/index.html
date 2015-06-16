@@ -1,6 +1,10 @@
 <html>
 <head>
 <title>Zboota server</title>
+<script type="text/javascript" src="js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.jqplot.js"></script>
+<link rel="stylesheet" type="text/css" href="css/vendor/jquery.jqplot.min.css"/>
+<script type="text/javascript" src="js/vendor/jqplot.dateAxisRenderer.min-1.0.8r1250.js"></script>
 <style>
 ul {
   list-style: none;
@@ -36,6 +40,7 @@ li:before {
 	<li>Login via App: <span id="status3" class="pend">N/A</span></li>
 	<li>Login via API: <span id="status4" class="pend">N/A</span></li>
 	<li>CI status: <a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="travis-ci status"></a></li>
+	<li>Daily usage: <div id="carsLastGetInPast24HrsChart" style="height:300px; width:500px;"></div></li>
 	</ul>
 </p>
 <script>
@@ -48,6 +53,28 @@ req0.onreadystatechange = function() {
  } else {
     stats=JSON.parse(this.responseText);
     document.getElementById('response').innerHTML = stats.cars+" cars, " + stats.users+" registered users, " + stats.notifications+" alerted registered users";
+    console.log(stats);
+
+    var plot1 = jQuery.jqplot ('carsLastGetInPast24HrsChart',
+	[stats.carsLastGetInPast24Hrs.nTotal,
+	 stats.carsLastGetInPast24Hrs.nNew], 
+      { 
+    axes:{xaxis:{
+        renderer:$.jqplot.DateAxisRenderer,
+        tickOptions:{formatString:'%b %#d\n%Y'},
+          tickInterval:'1 week'
+        }},
+        seriesDefaults: {
+          rendererOptions: {
+            // Put data labels on the pie slices.
+            // By default, labels show the percentage of the slice.
+            showDataLabels: true
+          }
+        }, 
+        legend: { show:true, location: 'e' }
+      }
+    );
+
   }
  }
 }

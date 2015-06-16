@@ -3,7 +3,8 @@
 * added notes on crontab requirement in INSTALL.md
 * added statistic on cars last got in 24 hrs and 1 hr
 * added uploading statistics on cars last got to dynamodb table for plotting as status (similar to travis-ci status)
-* integrated zboota-statistics into www/api/statistics.php and eventually will integrate into home page as a jqplot
+* integrated zboota-statistics into www/api/statistics.php
+* integrated zboota-statistics on nTotal and nNew from carsLastGetIn24 hrs into home page as a jqplot
 
 2015-06-13
 * moved tests of status to status indicators on the server home page (like travis-ci/status page)
