@@ -25,7 +25,37 @@ require_once ROOT.'/lib/connectDynamodb.php';
 
 $ddb=connectDynamoDb();
 
-$stats=array('users'=>count(iterator_to_array(
+$clgil24=$ddb->getIterator('Scan',array(
+    'TableName' => 'zboota-statistics',
+    'ProjectionExpression' => 'statDate,nTotal,nNew',
+    'ExpressionAttributeValues' =>  array ( ':val1' => array('S' => 'carsLastGetInPast24Hrs')),
+    'FilterExpression' => 'statName = :val1'
+));
+$clgil24=iterator_to_array($clgil24);
+// flatten into structure suitable for jqplot
+$clgil24=array(
+	"statDate"=>array_map(
+		function($x) {
+			return $x["statDate"]["S"];
+		},
+		$clgil24
+	),
+	"nTotal"=>array_map(
+		function($x) {
+			return (int)$x["nTotal"]["N"];
+		},
+		$clgil24
+	),
+	"nNew"=>array_map(
+		function($x) {
+			return (int)$x["nNew"]["N"];
+		},
+		$clgil24
+	)
+);
+
+$stats=array(
+	'users'=>count(iterator_to_array(
 		$ddb->getIterator('Scan',array(
 		    'TableName' => 'zboota-users'
 		))
@@ -39,6 +69,7 @@ $stats=array('users'=>count(iterator_to_array(
 		$ddb->getIterator('Scan',array(
 		    'TableName' => 'zboota-notifications'
 		))
-	))
+	)),
+	'carsLastGetInPast24Hrs'=>$clgil24
 );
 echo json_encode($stats);

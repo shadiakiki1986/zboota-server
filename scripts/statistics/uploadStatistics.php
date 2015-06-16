@@ -42,7 +42,7 @@ $ddb->putItem(array(
 	'statDate'  => array('S' => $tgclgb["summary"]["d2"]),
 	'd1'  => array('S' => $tgclgb["summary"]["d1"]),
 	'd2'  => array('S' => $tgclgb["summary"]["d2"]),
-	'total' => array('N' => $tgclgb["summary"]["total"]),
-	'new' => array('N' => $tgclgb["summary"]["new"])
+	'nTotal' => array('N' => $tgclgb["summary"]["total"]),
+	'nNew' => array('N' => $tgclgb["summary"]["new"])
     )
 ));
