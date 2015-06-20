@@ -6,6 +6,7 @@
 * as such, I added a breaker to make sure that this doesn''t happen again
 * I also split out the sendNotificationsCore function into a class and added tests
 * when Not available is set, also checking if website is originally available to set the force=true
+* added dynamodb caching of website statuses so as not to have to check every retrieval
 
 2015-06-16
 * added notes on crontab requirement in INSTALL.md
