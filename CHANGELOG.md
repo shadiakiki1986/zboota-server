@@ -1,4 +1,7 @@
 # Ver 0.0.3
+2015-06-20
+* added to home page status the statuses of data feeder websites
+
 2015-06-16
 * added notes on crontab requirement in INSTALL.md
 * added statistic on cars last got in 24 hrs and 1 hr

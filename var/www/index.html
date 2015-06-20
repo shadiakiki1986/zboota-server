@@ -3,6 +3,7 @@
 <title>Zboota server</title>
 <script type="text/javascript" src="js/vendor/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/vendor/jquery.jqplot.js"></script>
+<script type="text/javascript" src="js/vendor/pingThis.js"></script>
 <link rel="stylesheet" type="text/css" href="css/vendor/jquery.jqplot.min.css"/>
 <script type="text/javascript" src="js/vendor/jqplot.dateAxisRenderer.min-1.0.8r1250.js"></script>
 <style>
@@ -36,6 +37,9 @@ li:before {
 	<ul>
 	<li>Stats: <span id="response">-</span></li>
 	<li>Ping: <span id="status1" class="pend">N/A</span></li>
+	<li><a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status1b" class="pend">N/A</span></li>
+	<li><a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status1c" class="pend">N/A</span></li>
+	<li><a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status1d" class="pend">N/A</span></li>
 	<li>Anonymous retrieve: <span id="status2" class="pend">N/A</span></li>
 	<li>Login via App: <span id="status3" class="pend">N/A</span></li>
 	<li>Login via API: <span id="status4" class="pend">N/A</span></li>
@@ -93,6 +97,42 @@ req1.onreadystatechange = function() {
 }
 req1.open('GET', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
 req1.send(null);
+//-------------------------------------------------
+pingThis("http://www.parkmeterlebanon.com/statment_of_account.aspx",
+	function() { document.getElementById('status1b').innerHTML="Pending"; },
+	function() {
+		document.getElementById('status1b').innerHTML = "Error";
+		document.getElementById('status1b').className = "fail";
+	},
+	function() {
+		document.getElementById('status1b').innerHTML = "Working";
+		document.getElementById('status1b').className = "pass";
+	}
+).init();
+//-------------------------------------------------
+pingThis("http://isf.gov.lb/images/top_logo.png",
+	function() { document.getElementById('status1c').innerHTML="Pending"; },
+	function() {
+		document.getElementById('status1c').innerHTML = "Error";
+		document.getElementById('status1c').className = "fail";
+	},
+	function() {
+		document.getElementById('status1c').innerHTML = "Working";
+		document.getElementById('status1c').className = "pass";
+	}
+).init();
+//-------------------------------------------------
+pingThis("http://www.dawlati.gov.lb/dawlati-standard-theme/images/ministry/dawlati_en.png",
+	function() { document.getElementById('status1d').innerHTML="Pending"; },
+	function() {
+		document.getElementById('status1d').innerHTML = "Error";
+		document.getElementById('status1d').className = "fail";
+	},
+	function() {
+		document.getElementById('status1d').innerHTML = "Working";
+		document.getElementById('status1d').className = "pass";
+	}
+).init();
 //-------------------------------------------------
 var req2 = new XMLHttpRequest();
 req2.onreadystatechange = function() {
@@ -197,8 +237,13 @@ req3a.send(null);
 <h3>The zboota app itself allows you to ...</h3>
 <ul>
 <li>add multiple car plate numbers</li>
-<li>see any outstanding violations with <a href="http://www.isf.gov.lb/en/speedtickets"><img src="img/isf-top_logo_en.png" alt="ISF" /></a> and <a href="http://www.parkmeterlebanon.com/"><img src="img/pml-header_website_copy.jpg" alt="PML" /></a>.</li>
-<li>see your car's or cars' mechanique schedule/fee</li>
+<li>see any outstanding violations with
+	<a href="http://www.isf.gov.lb/en/speedtickets"><img src="img/isf-top_logo_en.png" alt="ISF" /></a>
+	and <a href="http://www.parkmeterlebanon.com/statment_of_account.aspx"><img src="img/pml-header_website_copy.jpg" alt="PML" /></a>.
+</li>
+<li>see your cars' mechanique schedule/fee from 
+	<a href="http://www.dawlati.gov.lb/en/mecanique"><img src="img/dawlati_en.png" alt="Dawlati"/></a>
+</li>
 <li>register an email address</li>
 <li>log in with a registered email address</li>
 </ul>
