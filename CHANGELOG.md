@@ -1,6 +1,10 @@
 # Ver 0.0.3
 2015-06-20
 * added to home page status the statuses of data feeder websites
+* because parkmeterlebanon is offline, the sendNotifications.php script emailed all registered users
+ * this is a false alarm of course
+* as such, I added a breaker to make sure that this doesn''t happen again
+* I also split out the sendNotificationsCore function into a class and added tests
 
 2015-06-16
 * added notes on crontab requirement in INSTALL.md
