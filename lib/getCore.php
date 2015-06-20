@@ -4,11 +4,13 @@ require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/connectDynamodb.php';
 require_once ROOT.'/lib/syncCore.php';
 require_once ROOT.'/lib/syncSave.php';
+require_once ROOT.'/lib/WebAvailability.php';
 
 # retrieval from dynamo db table
 function getCore($lpns,$force=false,$timeout=MY_CURL_TIMEOUT) {
 	$ddb=connectDynamoDb();
 	$data=array();
+	$wa=new WebAvailability();
 	foreach($lpns as $v) {
 		// get user data
 		$k="{$v['a']}/{$v['n']}";
@@ -26,10 +28,10 @@ function getCore($lpns,$force=false,$timeout=MY_CURL_TIMEOUT) {
 					//(array_key_exists($k2,$ud['Item']) && !array_key_exists($k2,$v)) ||
 					(array_key_exists($k2,$ud['Item']) && array_key_exists($k2,$v) && $ud['Item'][$k2]['S']!=$v[$k2]);
 			}
-			$force=$force||($ud['Item']['pml']['S']=="Not available");
-			$force=$force||($ud['Item']['isf']['S']=="Not available");
+			if($wa->res['pml']) $force=$force||($ud['Item']['pml']['S']=="Not available");
+			if($wa->res['isf']) $force=$force||($ud['Item']['isf']['S']=="Not available");
 			$force=$force||(date("Y-m-d")>date("Y-m-d",strtotime($ud['Item']['dataTs']['S'])));
-			if(array_key_exists('dm',$ud['Item'])) $force=$force||($ud['Item']['dm']['S']=="Not available");
+			if(array_key_exists('dm',$ud['Item'])) if($wa->res['dawlati']) $force=$force||($ud['Item']['dm']['S']=="Not available");
 		}
 
 //var_dump($v,$ud['Item'],$force);

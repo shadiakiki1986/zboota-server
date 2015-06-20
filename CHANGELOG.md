@@ -5,6 +5,7 @@
  * this is a false alarm of course
 * as such, I added a breaker to make sure that this doesn''t happen again
 * I also split out the sendNotificationsCore function into a class and added tests
+* when Not available is set, also checking if website is originally available to set the force=true
 
 2015-06-16
 * added notes on crontab requirement in INSTALL.md
