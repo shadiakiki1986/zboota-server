@@ -244,11 +244,11 @@ req5.onreadystatechange = function() {
      document.getElementById('status5c').className = "fail";
    } else {
     avail=JSON.parse(this.responseText);
-    document.getElementById('status5a').innerHTML = avail.pml==1 ? "Yes" : "No";
+    document.getElementById('status5a').innerHTML = avail.pml==1 ? "On" : "Off";
     document.getElementById('status5a').className = avail.pml==1 ? "pass" : "fail";
-    document.getElementById('status5b').innerHTML = avail.isf==1?"Yes":"No";
+    document.getElementById('status5b').innerHTML = avail.isf==1?"On":"Off";
     document.getElementById('status5b').className = avail.isf==1 ? "pass" : "fail";
-    document.getElementById('status5c').innerHTML = avail.dawlati==1?"Yes":"No";
+    document.getElementById('status5c').innerHTML = avail.dawlati==1?"On":"Off";
     document.getElementById('status5c').className = avail.dawlati==1 ? "pass" : "fail";
    }
  }
