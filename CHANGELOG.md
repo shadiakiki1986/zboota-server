@@ -1,4 +1,7 @@
 # Ver 0.0.3
+2015-06-22
+* added api hook to return the web availability ddb table + integrated it into home page
+
 2015-06-20
 * added to home page status the statuses of data feeder websites
 * because parkmeterlebanon is offline, the sendNotifications.php script emailed all registered users
