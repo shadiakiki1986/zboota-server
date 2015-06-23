@@ -4,6 +4,7 @@
 * added states to zboota notification email, i.e. new ticket, closed ticket, etc.
  * set sendNtofications to use simulation only so as to watch how this behaves over the next few days
  * will set simulation to false once I find this to have settled
+* updated tests
 
 2015-06-22
 * added api hook to return the web availability ddb table + integrated it into home page

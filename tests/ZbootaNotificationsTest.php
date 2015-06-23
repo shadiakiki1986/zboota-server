@@ -16,7 +16,7 @@ class ZbootaNotificationsTest extends PHPUnit_Framework_TestCase
 	//$zn->refresh();
         $gpmc=$zn->getPastMinusCurrent();
         $gc=$zn->current;
-        $gp=iterator_to_array($zn->past);
+        $gp=$zn->past;
 	// uncomment this to see simulation of emails to send
 	//$zn->sendEmail($gcmp,true);
 	//var_dump($gc,$gp,$gcmp,$gpmc);

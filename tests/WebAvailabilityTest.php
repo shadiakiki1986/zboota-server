@@ -15,9 +15,12 @@ class WebAvailabilityTest extends PHPUnit_Framework_TestCase
 
     public function testRes() {
 	$wa=new WebAvailability();
-        $this->assertTrue( $wa->res["isf"]);
-        $this->assertTrue( $wa->res["dawlati"]);
-        $this->assertTrue(!$wa->res["pml"]);
+        $this->assertArrayHasKey("isf", $wa->res);
+        $this->assertArrayHasKey("pml", $wa->res);
+        $this->assertArrayHasKey("dawlati", $wa->res);
+        $this->assertTrue(is_bool($wa->res["isf"]));
+        $this->assertTrue(is_bool($wa->res["dawlati"]));
+        $this->assertTrue(is_bool($wa->res["pml"]));
     }
 
 }
