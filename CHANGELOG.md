@@ -1,4 +1,7 @@
 # Ver 0.0.3
+2015-06-23
+* home page status of parkmeterlebanon corrected
+
 2015-06-22
 * added api hook to return the web availability ddb table + integrated it into home page
 

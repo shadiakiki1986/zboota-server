@@ -101,7 +101,7 @@ req1.onreadystatechange = function() {
 req1.open('GET', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
 req1.send(null);
 //-------------------------------------------------
-pingThis("http://www.parkmeterlebanon.com/statment_of_account.aspx",
+pingThis("http://www.parkmeterlebanon.com/Picutres/header_website_copy.jpg",
 	function() { document.getElementById('status1b').innerHTML="Pending"; },
 	function() {
 		document.getElementById('status1b').innerHTML = "Error";
@@ -150,12 +150,13 @@ req2.onreadystatechange = function() {
        document.getElementById('status2').className = "fail";
      } else {
        rt=JSON.parse(this.responseText);
+console.log(rt);
        if(rt.hasOwnProperty("error") || !rt.hasOwnProperty("B/1234")) {
          document.getElementById('status2').innerHTML = "Error";
          document.getElementById('status2').className = "fail";
        } else {
          rt=rt["B/1234"];
-         cond=rt.pml=="None" && rt.n=="1234" && rt.a=="B" && rt.isf=="None";
+         cond=rt.pml=="None" && rt.n=="1234" && rt.a=="B" && (rt.isf=="None"|| /\d{2}\/\d{2}\/\d{2}/.test(rt.isf));
          document.getElementById('status2').innerHTML = cond ? "Working" : "Error";
          document.getElementById('status2').className = cond ? "pass" : "fail";
        }
