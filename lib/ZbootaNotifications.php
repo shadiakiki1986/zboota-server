@@ -3,6 +3,7 @@
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/getZbootaUsers.php';
 require_once ROOT.'/lib/connectDynamodb.php';
+require_once ROOT.'/lib/mailSend.php';
 
 class ZbootaNotifications {
 
@@ -18,15 +19,15 @@ class ZbootaNotifications {
 		$this->past=$this->getPast();
 		$this->pastFlat=array_map(
 			function($x) { return $x["email"]["S"]; },
-			iterator_to_array($this->past)
+			$this->past
 		);
 		$this->current=$this->getCurrent();
 	}
 
 	function getPast() {
-		return $this->ddb->getIterator('Scan',array(
+		return iterator_to_array($this->ddb->getIterator('Scan',array(
 		    'TableName' => 'zboota-notifications'
-		));
+		)));
 	}
 
 	function getCurrent() {
@@ -71,7 +72,7 @@ class ZbootaNotifications {
 	}
 
 	function getCurrentMinusPast() {
-		$notices=$this->current;
+		$notices  = $this->current;
 
 		// drop entries in $notices that are also in zboota-notifications with the same set of car ids to notify
 		// i.e. already notified about tickets
@@ -81,13 +82,55 @@ class ZbootaNotifications {
 			if(array_key_exists($n1['email']['S'],$notices)) {
 				sort($notices[$n1['email']['S']]);
 				if($n1['carIds']['S']==json_encode($notices[$n1['email']['S']],true)) {
-					unset($notices[$n1['email']['S']]);
+					unset($notices [$n1['email']['S']]);
 				}
 			}
 		}
 
 		return $notices;
 	} // end function get
+
+	function augmentCurrentMinusPast($notices) {
+		// similar data structure but augmented with a flag about "new" tickets or "closed" tickets
+		$notices2 = array();
+		foreach($notices as $email=>$carIds) {
+			$notices2[$email]=array();
+
+			$n1=array_filter($this->past,function($n1) use($email) { return $n1['email']['S']==$email; });
+			if(count($n1)==0) {
+				// new email to notify. All states are new
+				foreach($carIds as $carId) {
+					$notices2[$email][$carId]=array(
+						"id"=>$carId,
+						"state"=>"new"
+					);
+				}
+			} else if(count($n1)>1) {
+				throw new Exception("What happened here");
+			} else {
+				$n1b=array_values($n1);
+				$n1b=$n1b[0];
+				$n1c=json_decode($n1b['carIds']['S'],true);
+				$newTickets=array_diff($carIds,$n1c);
+				$closedTickets=array_diff($n1c,$carIds);
+
+				foreach($carIds as $carId) {
+					$notices2[$email][$carId]=array(
+						"id"=>$carId,
+						"state"=>(in_array($carId,$newTickets)?
+							"new":
+							(in_array($carId,$closedTickets)?
+								"closed":
+								"open"
+							)
+						)
+					);
+				}
+			}
+		}
+
+		return $notices2;
+	} // end function
 
 	function getPastMinusCurrent() {
 		$notices=$this->current;
@@ -119,10 +162,13 @@ class ZbootaNotifications {
 		}
 	}
 
-	function sendEmail($notices,$simulate=false) {
+	function sendEmail($notices,$simulate=false,$breaker=5) {
+		// breaker: limit at which not to send the emails and notify me
+
 		if(count($notices)==0) {
-			echo "No email notifications to send\n";
-		} else if(count($notices)>5) {
+			echo date("Y-m-d H:i")." : No email notifications to send\n";
+			return false;
+		} else if(count($notices) > $breaker) {
 			// check if we have an obscene number of emails to send, then maybe something went wrong
 			if(!$simulate) mailSend("shadiakiki1986@gmail.com",
 				"Zboota notification alert",
@@ -133,18 +179,30 @@ class ZbootaNotifications {
 			echo date("Y-m-d H:i")." : Obscene number of emails to be sent (".count($notices)." emails). Skipped intentionally.\n";
 			return false;
 		} else {
+			$notices2 = $this->augmentCurrentMinusPast($notices);
+
 			// send emails of remaining notices
 			foreach($notices as $email=>$carIds) {
 				sort($carIds);
+
+				// augment the carIds with the state of each in parentheses
+				$carIds=array_map(function($cid) use($notices2,$email) {
+					if($notices2[$email][$cid]["state"]!="open") {
+						return sprintf("%s (%s)",$cid,$notices2[$email][$cid]["state"]);
+					} else {
+						return $cid;
+					}
+				}, $carIds);
+
 				if(!$simulate) mailSend($email,
 					"Zboota notification",
 					"Violations for: ".join(', ',$carIds)."<br>\n"
 					."Please check <a href='http://genesis.akikieng.com/zboota-server/client'>your app</a> for more details.<br>\n"
 					."--Zboota server"
 				);
-				echo date("Y-m-d H:i")." : Email {$email} about ".join(', ',$carIds)."\n";
+				echo date("Y-m-d H:i")." : Email ".($simulate?"(simulated) ":"")."{$email} about ".join(', ',$carIds)."\n";
 			}
-			return true;
+			return !$simulate;
 		}
 	}
 
