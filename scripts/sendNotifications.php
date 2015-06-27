@@ -7,5 +7,5 @@ $ddb=connectDynamoDb();
 $zn=new ZbootaNotifications($ddb);
 $zn->deleteNoMoreNotices($zn->getPastMinusCurrent());
 $notices=$zn->getCurrentMinusPast();
-if($zn->sendEmail($notices)) $zn->markAsSent($notices);
+if($zn->sendEmail($notices,false,10)) $zn->markAsSent($notices);
 
