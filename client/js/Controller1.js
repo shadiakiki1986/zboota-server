@@ -19,7 +19,7 @@ function Controller1($scope, $http) {
 		dataTsAll=[];
 		getParN=0;
 		for(var x in $scope.data) {
-			getLambda($scope.data[x],x); // getLambda
+			get($scope.data[x],x);
 		}
 	}
 	$scope.$on('loggedIn', function(event) { $scope.getPar(); });
