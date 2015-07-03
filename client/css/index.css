@@ -1,0 +1,37 @@
+body { margin-top:30px; } /* ios top battery, signal, ... */
+/* td { white-space: nowrap; } */
+/*
+This shows up too tight on iOS
+select { width:1em; }
+*/
+button { user-select: none; }
+.modal {
+    position:fixed;
+    top:30px;
+}
+
+/* this wasn't working   .blinking { text-decoration: blink; } */
+/* now using this  http://fredericiana.com/2012/11/04/html5-blink-tag/  */
+
+/*
+Below worked in firefox, but replaced with gif because didn't work on android
+.blinking {
+    animation-duration: 0.5s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(2, start);
+}
+@keyframes blink {
+    80% {
+        visibility: hidden;
+    }
+}
+*/
+.imgprvw{
+    width:100%;
+    max-width:50px;
+}
+.imgprvw2{
+    width:100%;
+    max-width:250px;
+}
