@@ -194,8 +194,9 @@ req3a.onreadystatechange = function() {
              document.getElementById('status3').innerHTML = "Error 3";
              document.getElementById('status3').className = "fail";
            } else {
-               document.getElementById('status3').innerHTML = this.responseText=="{}" ? "Working" : "Error";
-               document.getElementById('status3').className = this.responseText=="{}" ? "pass" : "fail";
+		re=new RegExp("{.*}");
+               document.getElementById('status3').innerHTML = re.test(this.responseText) ? "Working" : "Error";
+               document.getElementById('status3').className = re.test(this.responseText) ? "pass" : "fail";
            }
           }
 
@@ -215,9 +216,9 @@ req3a.onreadystatechange = function() {
              document.getElementById('status4').innerHTML = "Error 3";
              document.getElementById('status4').className = "fail";
            } else {
-               cond="<table><tr><th>Letter</th><th>Number</th><th>Label</th><th>ISF</th><th>PML</th></tr></table>";
-               document.getElementById('status4').innerHTML = this.responseText==cond ? "Working" : "Error";
-               document.getElementById('status4').className = this.responseText==cond ? "pass" : "fail";
+               cond=new RegExp("<table><tr><th>Letter</th><th>Number</th><th>Label</th><th>ISF</th><th>PML</th></tr>.*</table>");
+               document.getElementById('status4').innerHTML = cond.test(this.responseText) ? "Working" : "Error";
+               document.getElementById('status4').className = cond.test(this.responseText) ? "pass" : "fail";
            }
           }
 
