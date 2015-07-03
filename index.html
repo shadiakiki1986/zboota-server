@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Zboota-server by shadiakiki1986</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Zboota-server</h1>
+        <p>Server-side of zboota-server</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/shadiakiki1986/zboota-server" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/shadiakiki1986/zboota-server/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/shadiakiki1986/zboota-server/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a id="general" class="anchor" href="#general" aria-hidden="true"><span class="octicon octicon-link"></span></a>General</h1>
+
+<ul>
+<li>Author: Shadi Akiki ( shadiakiki1986 at gmail dot com )</li>
+<li>Licensed under WTFPL</li>
+<li><a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="Build Status"></a></li>
+</ul>
+
+<h1>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h1>
+
+<ul>
+<li>Server-side of zboota app</li>
+<li>It serves an API to the following websites
+
+<ul>
+<li><a href="http://www.isf.gov.lb/ar/speedtickets">http://www.isf.gov.lb/ar/speedtickets</a></li>
+<li><a href="http://www.parkmeterlebanon.com/default/STATMENT_OF_ACCOUNT.aspx">http://www.parkmeterlebanon.com/default/STATMENT_OF_ACCOUNT.aspx</a></li>
+</ul>
+</li>
+<li>It manages user information and updates their data daily from the sites above</li>
+</ul>
+
+<h1>
+<a id="architecture" class="anchor" href="#architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Architecture</h1>
+
+<ul>
+<li>php server</li>
+<li>mobile app developed with cordova</li>
+<li>json messages</li>
+<li>dynamodb table for user data</li>
+<li>AWS EC2 instance
+
+<ul>
+<li>serves API</li>
+<li>updates data daily</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="note-1-dynamodb-reserved-keywords" class="anchor" href="#note-1-dynamodb-reserved-keywords" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note 1: Dynamodb reserved keywords</h1>
+
+<ul>
+<li><a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ReservedWords.html">http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ReservedWords.html</a></li>
+</ul>
+
+<h1>
+<a id="note-2-failed-builds-on-travis-ci" class="anchor" href="#note-2-failed-builds-on-travis-ci" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note 2: Failed builds on travis-ci</h1>
+
+<ul>
+<li>Build 42 (<a href="https://travis-ci.org/shadiakiki1986/zboota-server/builds/63521468">https://travis-ci.org/shadiakiki1986/zboota-server/builds/63521468</a>) on travis-ci seems to fail with an error about TLS</li>
+<li>I had thought to have solved this issue by using the known hosts field in the travis yml file</li>
+<li>so I tried to rebuild the last successful commit, a08093d, by branching it out to a branch I called ''lastsuccess''</li>
+<li>Commit a08093d had passed in build 41 (<a href="https://travis-ci.org/shadiakiki1986/zboota-server/builds/63161583">https://travis-ci.org/shadiakiki1986/zboota-server/builds/63161583</a>)</li>
+<li>however, building it again, via the whitelist entry in the travis yml file, seems to fail now in build 43 (<a href="https://travis-ci.org/shadiakiki1986/zboota-server/builds/63524924">https://travis-ci.org/shadiakiki1986/zboota-server/builds/63524924</a>)</li>
+<li>I''ll need to understand what is going on .. later</li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/shadiakiki1986">shadiakiki1986</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
