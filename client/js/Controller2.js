@@ -52,29 +52,13 @@ function Controller2($scope,$http) {
 
 		if($scope.loginInvalid()||!$scope.$parent.serverAvailable) return;
 
-		// check if any photos need to be uploaded
-		toUpload=Object.keys($scope.$parent.data).filter(function(t) {
-			return(
-				$scope.$parent.photos.hasOwnProperty(t)&&
-				!$scope.$parent.data[t].hasOwnProperty("photoUrl")
-			);
-		});
-		if(toUpload.length>0) { 
-			//console.log("Uploading unuploaded photo for ", toUpload);
-			uploadPhotoAsDataUrl(toUpload);
-		} else {
 			// drop the ISF and PML data so that only the area, number, and label are stored
-			// also drop the photo data url
 			temp=angular.fromJson(angular.toJson($scope.$parent.data));
 			for(t in temp) {
 				temp2={'a':temp[t].a, 'n':temp[t].n, 'l':temp[t].l};
 				if(temp[t].hp) temp2.hp=temp[t].hp;
 				if(temp[t].y) temp2.y=temp[t].y;
 				if(temp[t].t) temp2.t=temp[t].t;
-				// do not upload photo as data URL because it borks the write capacity in dynamodb.
-				// Instead, upload photo to S3 bucket with unique filename and add a new parameter that references this
-				//if(temp[t].photo) temp2.photo=temp[t].photo;
-				if(temp[t].photoUrl) temp2.photoUrl=temp[t].photoUrl;
 
 				temp[t]=temp2;
 			}
@@ -106,8 +90,6 @@ function Controller2($scope,$http) {
 			} else {
 				if(sFn) sFn();
 			}
-		} // end toUpload.length>0
-
 	};
 
 	$scope.newUStatus="None";
@@ -189,35 +171,5 @@ function Controller2($scope,$http) {
 		});
 	};
 
-	// uploading photos only for logged in users
-	$scope.$parent.uploadPhotoStatus=0;
-	uploadPhotoAsDataUrlComplete=function() {
-		$scope.$parent.uploadPhotoStatus=Math.max(0,$scope.$parent.uploadPhotoStatus-1);
-		if($scope.$parent.uploadPhotoStatus==0) $scope.update(); // this would indicate the end of photos upload
-	}
-	uploadPhotoAsDataUrl=function(di2) {
-	// di2: array of keys in $scope.$parent.data
-		if($scope.loginInvalid()||!$scope.$parent.serverAvailable) return;
-		if($scope.loginStatus!='Logged in') return;
-
-		//console.log("Upload photo as data url ", di2);
-		di2.map(function(di) {
-			//console.log("Upload photo as data url ", di, $scope.$parent.data[di]);
-			$scope.$parent.uploadPhotoStatus+=1;
-			$http.post(	ZBOOTA_SERVER_URL+'/api/uploadPhotoAsDataUrl.php',
-					{image_file:$scope.$parent.photos[di]},
-				    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
-				).
-				success( function(text) {
-					$scope.$parent.data[di].photoUrl=text;
-					uploadPhotoAsDataUrlComplete();
-				}).
-				error( function() {
-					console.log("Error in upload",di);
-					uploadPhotoAsDataUrlComplete();
-					$scope.$parent.pingServer();
-				});
-		});
-	};
 
 };

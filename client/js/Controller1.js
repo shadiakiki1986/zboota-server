@@ -1,7 +1,6 @@
 function Controller1($scope, $http) {
 
 	$scope.data={};
-	$scope.photos={};
 
 	$scope.getStatus="None";
 
@@ -43,7 +42,15 @@ function Controller1($scope, $http) {
 		if(Object.keys(dk).length==0) return;
 
 		Object.keys(dk).forEach(function(k) { getParStatus[k]=true; });
-		if(false) getNonLambda(dk); else getLambda(dk);
+		// drop isf, pml, dm fields before submission
+		dk2=angular.fromJson(angular.toJson(dk));
+		Object.keys(dk2).forEach(function(k) {
+			if(dk2[k].hasOwnProperty("isf")) delete dk2[k].isf;
+			if(dk2[k].hasOwnProperty("pml")) delete dk2[k].pml;
+			if(dk2[k].hasOwnProperty("dm" )) delete dk2[k].dm ;
+		});
+
+		if(false) getNonLambda(dk2); else getLambda(dk2);
 	};
 
 	getNonLambda = function(dk) {
@@ -111,9 +118,7 @@ function Controller1($scope, $http) {
 	$scope.del=function(a,n) {
 		id=an2id(a,n);
 		delete $scope.data[id];
-		delete $scope.photos[id];
 		window.localStorage.setItem('data',angular.toJson($scope.data));
-		window.localStorage.setItem('photos',angular.toJson($scope.photos));
 		$scope.$broadcast('requestUpdate');
 		if($scope.noData2()) {
 			$scope.dataTs=null;
@@ -156,63 +161,12 @@ function Controller1($scope, $http) {
 		myscope=$scope;
 		if(myscope.editStatus) if(myscope.editStatus!=an2id(xxx.a,xxx.n)) {
 			delete myscope.data[myscope.editStatus]; // this is the case when the editing involves change the area code and/or number
-			delete myscope.photos[myscope.editStatus];
 		}
 		if(xxx.hasOwnProperty("y")&&xxx.y=="") delete xxx.y;
 		if(xxx.hasOwnProperty("hp")&&xxx.hp=="") delete xxx.hp;
 		if(xxx.hasOwnProperty("t")&&xxx.t=="") delete xxx.t;
 
-		// split out photo
-		photo=null;
-		if(xxx.hasOwnProperty("photo")) { photo=xxx.photo; delete xxx.photo; }
-
-		// check if need to get image
-		// including in case where the image stored in localStorage is the dataurl of the original image, hence reloading the image from the server can yield a shorter dataurl
-		// This also serves that the image was not showing up on my tablet
 		id=an2id(xxx.a,xxx.n);
-		//console.log(id,xxx.photoUrl,myscope.data[id].photoUrl);
-		if(xxx.hasOwnProperty('photoUrl') && (!myscope.data.hasOwnProperty(id) || myscope.data[id].photoUrl!=xxx.photoUrl || !myscope.photoshow1(xxx.a,xxx.n) || xxx.photoUrl.length>180000)) {
-			console.log("Need to get photo "+xxx.photoUrl+" for "+id);
-
-			// http://stackoverflow.com/a/16566198
-			// but https://html.spec.whatwg.org/multipage/scripting.html#dom-canvas-todataurl
-			/*
-			var img = new Image();
-			img.onload = function () {
-				var canvas = document.createElement("canvas");
-				canvas.width =this.width;
-				canvas.height =this.height;
-				var ctx = canvas.getContext("2d");
-				ctx.drawImage(this, 0, 0);
-				var dataURL = canvas.toDataURL("image/png");
-				myscope.$apply(function() { myscope.photos[an2id(xxx.a,xxx.n)]=dataURL; });
-			};
-			img.src = ZBOOTA_SERVER_URL+'/api/loadPhoto.php?name='+xxx.photoUrl;
-			*/
-			$http.get(ZBOOTA_SERVER_URL+'/api/loadPhoto.php?name='+xxx.photoUrl)
-				.success( function(rt) {
-					id=an2id(xxx.a,xxx.n);
-					myscope.photos[id]=rt;
-					window.localStorage.setItem('photos',angular.toJson(myscope.photos));
-				}).
-				error( function(rt,et,ts) {
-					console.log("Failed to get photo "+xxx.photoUrl);
-					$scope.pingServer();
-				});
-
-		} // end check if need to get image
-		if(photo!=null) {
-			// just added photo
-			myscope.photos[id]=photo;
-		} else {
-			if(!isChild) {
-				// photo must have been deleted
-				// Cannot replace this with $scope.photoshow1 due to scope and calling this from Controller2
-				if(myscope.photoshow1(xxx.a,xxx.n)) { 
-					delete myscope.photos[id];
-				}
-			}
-		}
 
 		// Instead of myscope.data[id]=angular.fromJson(angular.toJson(xxx))
 		// which overwrites the isf, pml, and dm fields
@@ -232,7 +186,6 @@ function Controller1($scope, $http) {
 		}
 
 		window.localStorage.setItem('data',angular.toJson(myscope.data));
-		window.localStorage.setItem('photos',angular.toJson(myscope.photos));
 
 		if(!isChild) myscope.$broadcast('requestUpdate');
 
@@ -274,12 +227,11 @@ function Controller1($scope, $http) {
 		$scope.pingServer();
 		wlsgi1=window.localStorage.getItem('data');
 		wlsgi2=window.localStorage.getItem('dataTs');
-		photos=window.localStorage.getItem('photos');
+		if(window.localStorage.getItem('dataTs')!==null) window.localStorage.removeItem('photos');
 
 		$scope.$apply(function() {
 			if(wlsgi1!==null) { $scope.data=angular.fromJson(wlsgi1); }
 			if(wlsgi2!==null) { $scope.dataTs=angular.fromJson(wlsgi2); }
-			if(photos!==null) { $scope.photos=angular.fromJson(photos); }
 		});
 		setInterval(function() { $scope.$apply(function() { $scope.tnow=new Date();}); }, 60000);
 
@@ -321,8 +273,6 @@ function Controller1($scope, $http) {
 	$scope.edit=function(a,n) {
 		$scope.editStatus=an2id(a,n);
 		$scope.addC=angular.fromJson(angular.toJson($scope.data[an2id(a,n)]));
-		ps1=$scope.photoshow1(a,n);
-		if(ps1) $scope.addC.photo=angular.fromJson(angular.toJson(ps1)); // recuperating photo
 		$scope.showAdd();
 	};
 	$scope.addCisInvalid=function() {
@@ -348,11 +298,6 @@ function Controller1($scope, $http) {
 				return(m==months[m2]);
 			}
 		}
-	};
-
-	$scope.photoshow1=function(a,n) {
-		id=an2id(a,n);
-		if(!$scope.photos.hasOwnProperty(id)) return false; else return $scope.photos[id];
 	};
 
 	getLambda = function(dk) {

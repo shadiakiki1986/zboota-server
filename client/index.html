@@ -12,7 +12,6 @@
         <script src="js/Controller1.js"></script>
         <script src="js/Controller2.js"></script>
         <script src="js/Controller3.js"></script>
-        <script src="js/Controller4.js"></script>
 	<!--<link rel="stylesheet" type="text/css" href="css/vendor/bootstrap.min.css" />-->
 	<link rel="stylesheet" type="text/css" href="css/vendor/bootstrap-3.3.4.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/vendor/bootstrap-responsive.min.css" />
@@ -86,32 +85,7 @@
 		</th>
 	</tr>
 	<tbody ng-repeat="rd in data">
-		<tr class="{{getCarRowClass(rd.a,rd.n)}}" ng-if="photoshow1(rd.a,rd.n)">
-			<td>
-				<img ng-src="{{photoshow1(rd.a,rd.n)}}" class="imgprvw">
-			</td>
-			<td>
-				<div class="row">
-					<div class="pull-left">
-						<div>{{rd.l}}</div>
-						<div class="text-muted">{{rd.a}} &nbsp; {{rd.n}}</div>
-					</div>
-					<div class="pull-left">
-						&nbsp;&nbsp;
-					</div>
-					<div class="pull-left">
-						<div ng-if="rd.isf">ISF: &nbsp; {{rd.isf}}</div>
-						<div ng-if="rd.pml">PML: &nbsp; {{rd.pml}}</div>
-						<!-- didnt work on android   <div ng-if="(!rd.isf || !rd.pml) && getStatus=='Requesting'" class="blinking">&#x25BC</div> -->
-						<div ng-if="(!rd.isf || !rd.pml || getParStatusFn(rd.a,rd.n)) && getStatus=='Requesting'"><img src="img/arrow_down.gif" /></div>
-					</div>
-				</div>
-			</td>
-			<td rowspan={{rd.dm?2:1}}>
-				<button ng-click="edit(rd.a,rd.n)" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span></button>
-			</td>
-		</tr>
-		<tr class="{{getCarRowClass(rd.a,rd.n)}}" ng-if="!photoshow1(rd.a,rd.n)">
+		<tr class="{{getCarRowClass(rd.a,rd.n)}}">
 			<td>
 				<span>{{rd.l}}</span>
 				<br>
@@ -180,17 +154,6 @@
 			  <div class="col-xs-10"><select ng-model="addC.t" class="dropdown form-control" id="addC_t"><option ng-repeat="a in cartypes" ng-value="a">{{a}}</option></select></div>
 			</div>
 			</div> <!-- end row -->
-			<br>
-			Optional (for fun)
-			<div ng-controller="Controller4">
-				<div ng-if="!photoshow4()">Photo 
-					<input type="file" id="image1" onchange="angular.element(this).scope().addPhoto()" name="image_file">
-				</div>
-				<div ng-if=" photoshow4()">
-	       				<button class="close" ng-click="rmPhoto()"><span class="glyphicon glyphicon-remove"></span></button>
-					<img ng-src="{{photoshow4()}}" class="imgprvw2" ng-if="photoshow4()">
-				</div>
-			</div>
 		</div><!-- end body -->
 		<div class="modal-footer">
 			<div class="row">
