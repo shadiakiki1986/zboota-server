@@ -9,7 +9,9 @@ function Controller1($scope, $http) {
 	dataTsAll=[];
 	getParN=0;
 	getParStatus={};
-	$scope.getParStatusFn=function(a,n) { return getParStatus[an2id(a,n)]; };
+	$scope.getParStatusFn=function(a,n) {
+		return getParStatus[an2id(a,n)];
+	};
 	$scope.getPar = function() {
 		// wrapper around $scope.get to call it in parallel
 		if(!$scope.serverAvailable) return;
@@ -18,55 +20,70 @@ function Controller1($scope, $http) {
 		$scope.getStatus="Requesting";
 		dataTsAll=[];
 		getParN=0;
-		for(var x in $scope.data) {
-			get($scope.data[x],x);
+		getParStatus={};
+
+		if(true) {
+			// non-parallel retrieval
+			get($scope.data);
+		} else {
+			// parallel retrieval
+			Object.keys($scope.data).forEach(function(x) {
+				temp={};
+				temp[x]=$scope.data[x];
+				get(temp);
+			});
 		}
 	}
 	$scope.$on('loggedIn', function(event) { $scope.getPar(); });
 	$scope.getError={};
 	$scope.getErrorAny=function() { return Object.keys($scope.getError).length>0; };
 
-	get=function(dk,k) {
-		if(false) getNonLambda(dk,k); else getLambda(dk,k);
+	get=function(dk) {
+		if(!$scope.serverAvailable) return;
+		if(Object.keys(dk).length==0) return;
+
+		Object.keys(dk).forEach(function(k) { getParStatus[k]=true; });
+		if(false) getNonLambda(dk); else getLambda(dk);
 	};
 
-	getNonLambda = function(dk,k) {
-	// dk: entry from $scope.data to retrieve
-	//  k: key from $scope.data corresponding to dk
+	getNonLambda = function(dk) {
+	// dk: associative array of entries from $scope.data to retrieve
 	// Note: Also check getLambda function below
-		if(!$scope.serverAvailable) return;
-		if(Object.keys($scope.data).length==0) return;
-		getParStatus[k]=true;
+
+		// convert dk to non-associative array
+		dk2=Object.keys(dk).map(function(x) { return dk[x]; });
 
 		$http({method:'POST',
 			url: ZBOOTA_SERVER_URL+'/api/get2.php',
-			data: {lpns:JSON.stringify([dk])},
+			data: {lpns:JSON.stringify(dk2)},
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			}).
-			success( function(rt) { $scope.getCore(rt,k); } ).
-			error( function(et) {
-				getParN+=1;
-
-				console.log("Error getting zboota from server. "+et);
-				getParStatus[k]=false;
-				if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
-				$scope.pingServer();
-			})
-		;
+			success( function(rt) { $scope.getCore(rt,Object.keys(dk)); } ).
+			error( function(et) { $scope.getCoreError(et,dk); });
 	};
 
-	$scope.getCore = function(rt,k) {
+	$scope.getCoreError = function(et,dk) {
+		getParN+=Object.keys(dk).length;
+
+		console.log("Error getting zboota from server. "+et);
+		Object.keys(dk).forEach(function(k) { getParStatus[k]=false; });
+		if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
+		$scope.pingServer();
+	};
+
+	$scope.getCore = function(rt,ks) {
 	// rt: return value from my api on success
+	// ks: array of keys of originally passed associative array
 
 		//console.log("got data",rt);
-		getParN+=1;
+		getParN+=ks.length;
 
 		if(rt.hasOwnProperty("error")) {
 			//alert("We're having trouble getting your car's zboota from the servers. Please try again later.");
 			//console.log("error, "+rt.error);
-			$scope.getError[k]=rt.error;
+			ks.forEach(function(k) { $scope.getError[k]=rt.error; });
 		} else {
-			delete $scope.getError[k];
+			ks.forEach(function(k) { delete $scope.getError[k]; });
 			if(Object.keys(rt).length>0) {
 				for(var i in rt) {
 					$scope.data[i].isf=rt[i].isf;
@@ -86,7 +103,7 @@ function Controller1($scope, $http) {
 				}
 			}
 		}
-		getParStatus[k]=false;
+		ks.forEach(function(k) { getParStatus[k]=false; });
 		if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
 	};
 
@@ -153,7 +170,7 @@ function Controller1($scope, $http) {
 		// including in case where the image stored in localStorage is the dataurl of the original image, hence reloading the image from the server can yield a shorter dataurl
 		// This also serves that the image was not showing up on my tablet
 		id=an2id(xxx.a,xxx.n);
-//console.log(id,xxx.photoUrl,myscope.data[id].photoUrl);
+		//console.log(id,xxx.photoUrl,myscope.data[id].photoUrl);
 		if(xxx.hasOwnProperty('photoUrl') && (!myscope.data.hasOwnProperty(id) || myscope.data[id].photoUrl!=xxx.photoUrl || !myscope.photoshow1(xxx.a,xxx.n) || xxx.photoUrl.length>180000)) {
 			console.log("Need to get photo "+xxx.photoUrl+" for "+id);
 
@@ -338,13 +355,11 @@ function Controller1($scope, $http) {
 		if(!$scope.photos.hasOwnProperty(id)) return false; else return $scope.photos[id];
 	};
 
-	getLambda = function(dk,k) {
+	getLambda = function(dk) {
 	// same as get function, but using AWS Lambda
 	// dk: entry from $scope.data to retrieve
 	//  k: key from $scope.data corresponding to dk
-		if(!$scope.serverAvailable) return;
-		if(Object.keys($scope.data).length==0) return;
-		getParStatus[k]=true;
+
 
 		// cognito role
 		// Initialize the Amazon Cognito credentials provider
@@ -375,25 +390,22 @@ function Controller1($scope, $http) {
 			    'region'  : "us-west-2"
 			});
 
+			// convert dk to non-associative array
+			dk2=Object.keys(dk).map(function(x) { return dk[x]; });
+
 			// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#invoke-property
 			var params = {
 			  FunctionName: 'zboota-get', /* required */
-			  Payload: angular.toJson([dk])
+			  Payload: JSON.stringify(dk2)
 			};
 			lambda.invoke(params, function(err, data) {
 			  if (err||data.StatusCode!=200) {
-				console.log("Error getting zboota from server.");
-				console.log(err, err.stack); // an error occurred
-				getParN+=1;
-
-				getParStatus[k]=false;
-				if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
-				$scope.pingServer();
+				$scope.getCoreError(err,dk);
 			  } else {
 				rt=angular.fromJson(data.Payload);
-				//console.log("Success in getting zboota from server");
+				//console.log("Lambda Success in getting zboota from server");
 				//console.log(rt);           // successful response
-				$scope.$apply(function() { $scope.getCore(rt,k); });
+				$scope.$apply(function() { $scope.getCore(rt,Object.keys(dk)); });
 			  }
 			});
 
