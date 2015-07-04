@@ -27,7 +27,7 @@ function Controller1($scope, $http) {
 	$scope.getErrorAny=function() { return Object.keys($scope.getError).length>0; };
 
 	get=function(dk,k) {
-		if(true) getNonLambda(dk,k); else getLambda(dk,k);
+		if(false) getNonLambda(dk,k); else getLambda(dk,k);
 	};
 
 	getNonLambda = function(dk,k) {
@@ -58,7 +58,7 @@ function Controller1($scope, $http) {
 	$scope.getCore = function(rt,k) {
 	// rt: return value from my api on success
 
-		console.log("got data",rt);
+		//console.log("got data",rt);
 		getParN+=1;
 
 		if(rt.hasOwnProperty("error")) {
@@ -346,34 +346,59 @@ function Controller1($scope, $http) {
 		if(Object.keys($scope.data).length==0) return;
 		getParStatus[k]=true;
 
-		// zboota-app IAM user
-		var lambda = new AWS.Lambda({
-		    'accessKeyId' : "AKIAIQIV7H3P3LUJIRKA",
-		    'secretAccessKey'  : "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",
-		    'region'  : "us-west-2"
+		// cognito role
+		// Initialize the Amazon Cognito credentials provider
+		AWS.config.region = 'us-east-1'; // Region
+		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+		    IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
 		});
 
-		// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#invoke-property
-		var params = {
-		  FunctionName: 'zboota-get', /* required */
-		  Payload: angular.toJson([dk])
-		};
-		lambda.invoke(params, function(err, data) {
-		  if (err||data.StatusCode!=200) {
-			console.log("Error getting zboota from server.");
-			console.log(err, err.stack); // an error occurred
-			getParN+=1;
+		// Make the call to obtain credentials
+		AWS.config.credentials.get(function(err){
+		    if (err) {
+			console.log("Error: "+err);
+			return;
+		    }
 
-			getParStatus[k]=false;
-			if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
-			$scope.pingServer();
-		  } else {
-			rt=angular.fromJson(data.Payload);
-			//console.log("Success in getting zboota from server");
-			//console.log(rt);           // successful response
-			$scope.$apply(function() { $scope.getCore(rt,k); });
-		  }
+		    //     console.log("Cognito Identity Id: " + AWS.config.credentials.identityId);
+
+		    // Credentials will be available when this function is called.
+		    var accessKeyId = AWS.config.credentials.accessKeyId;
+		    var secretAccessKey = AWS.config.credentials.secretAccessKey;
+		    var sessionToken = AWS.config.credentials.sessionToken;
+
+			// zboota-app IAM user
+			var lambda = new AWS.Lambda({
+			    'accessKeyId' : accessKeyId,
+			    'secretAccessKey'  : secretAccessKey,
+			    'sessionToken' : sessionToken,
+			    'region'  : "us-west-2"
+			});
+
+			// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#invoke-property
+			var params = {
+			  FunctionName: 'zboota-get', /* required */
+			  Payload: angular.toJson([dk])
+			};
+			lambda.invoke(params, function(err, data) {
+			  if (err||data.StatusCode!=200) {
+				console.log("Error getting zboota from server.");
+				console.log(err, err.stack); // an error occurred
+				getParN+=1;
+
+				getParStatus[k]=false;
+				if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
+				$scope.pingServer();
+			  } else {
+				rt=angular.fromJson(data.Payload);
+				//console.log("Success in getting zboota from server");
+				//console.log(rt);           // successful response
+				$scope.$apply(function() { $scope.getCore(rt,k); });
+			  }
+			});
+
 		});
+
 
 	};
 
