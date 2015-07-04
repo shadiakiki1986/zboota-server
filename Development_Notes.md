@@ -22,3 +22,7 @@ These are misc notes for myself
 * Delete git branch
  * Local: git branch -d lastsuccess
  * Remote: git push origin --delete lastsuccess
+* using gh-pages branch
+ * 1st checkout: git checkout --track -b gh-pages origin/gh-pages
+ * later: git checkout gh-pages    or    git checkout master
+ * can commit and push changes normally
