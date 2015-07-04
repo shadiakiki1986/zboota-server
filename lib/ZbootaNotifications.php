@@ -197,7 +197,7 @@ class ZbootaNotifications {
 				if(!$simulate) mailSend($email,
 					"Zboota notification",
 					"Violations for: ".join(', ',$carIds)."<br>\n"
-					."Please check <a href='http://genesis.akikieng.com/zboota-server/client'>your app</a> for more details.<br>\n"
+					."Please check <a href='http://shadiakiki1986.github.io/zboota-server/client/'>your app</a> for more details.<br>\n"
 					."--Zboota server"
 				);
 				echo date("Y-m-d H:i")." : Email ".($simulate?"(simulated) ":"")."{$email} about ".join(', ',$carIds)."\n";
