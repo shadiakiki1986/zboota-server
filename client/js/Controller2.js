@@ -1,6 +1,5 @@
 function Controller2($scope,$http) {
 
-  $scope.loginStatus='None';
   $scope.dataServer='{}';
 
   $scope.loginReset=function() { $scope.loginU={email:'',pass:''}; };
@@ -10,73 +9,13 @@ function Controller2($scope,$http) {
     return ($scope.loginStatus!='None'&&$scope.loginStatus!='Logged in')||$scope.getStatus!='None'||!$scope.loginU.email||!(excludePass||$scope.loginU.pass);
   };
 
+  $scope.loginStatus='None';
+  lm = new LoginManager($scope);
   $scope.login=function() {
     if($scope.loginInvalid()||!$scope.$parent.serverAvailable) return;
-    if(false) $scope.loginNonLambda(); else $scope.loginLambda();
-  }
-
-  loginCore = function(rt) {
-        $scope.$apply(function() {
-          $scope.loginStatus='Logged in';
-          // append data from server to here
-          // Note that I tested that this line is not asynchronous
-          $scope.$emit("requestAddCore",rt); // not sure if I can just call $scope.$parent.addCore directly because of $scope 
-
-          window.localStorage.setItem('loginU',angular.toJson($scope.loginU));
-          $scope.dataServer=angular.toJson(rt);
-
-        });
-        $scope.update(function() {
-          $scope.$emit("loggedIn"); //$scope.$parent.get(); // retrieving data after login
-        }); // updating with whatever was done while offline
-  };
-
-  loginCoreError = function(msg) {
-        alert("Zboota login error: "+msg);
-        $scope.$apply(function() { $scope.loginStatus='None'; });
-        //$scope.$parent.pingServer();
-  };
-
-  $scope.loginNonLambda=function() {
     $scope.loginStatus='Logging in';
-    $.ajax({type:'POST',
-      url: ZBOOTA_SERVER_URL+'/api/login.php',
-      data: $scope.loginU,
-      dataType: 'json',
-      success: function(rt) {
-        $scope.hideLogin();
-        if(rt.hasOwnProperty("error")) {
-          loginCoreError(rt.error);
-          return;
-        }
-        loginCore(rt);
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        loginCoreError("Error logging in. "+textStatus+","+errorThrown);
-      }
-    });
-  };
-
-  $scope.loginLambda = function() {
-    $scope.$parent.awsMan.invokeLambda(
-      "zboota-login",
-      $scope.loginU,
-      function(err,data) {
-        $scope.hideLogin();
-        if (err||data.StatusCode!=200) {
-          loginCoreError(err);
-          return;
-        }
-        rt=angular.fromJson(data.Payload);
-        if(rt.hasOwnProperty("errorMessage")) {
-          loginCoreError(rt.errorMessage);
-          return;
-        }
-        rt=angular.fromJson(rt);
-        loginCore(rt);
-    });
-
-  };
+    if(!USE_AWS_LAMBDA) lm.loginNonLambda(); else lm.loginLambda();
+  }
 
   $scope.updateStatus='None';
   $scope.update=function(sFn) {
@@ -179,28 +118,11 @@ function Controller2($scope,$http) {
   $scope.showNew=function() { $scope.loginType='New';    $('#loginModal').modal('show'); };
 
   $scope.forgotPasswordStatus=false;
+  fpm = new ForgotPasswordManager($scope);
   $scope.forgotPassword=function() {
+    if($scope.loginInvalid(true)||!$scope.$parent.serverAvailable) return;
     $scope.forgotPasswordStatus=true;
-    $.ajax({type:'POST',
-      url: ZBOOTA_SERVER_URL+'/api/forgotPassword.php',
-      data: $scope.loginU,
-      dataType: 'json',
-      success: function(rt) {
-        if(rt.hasOwnProperty("error")) {
-          alert("Zboota forgot password error: "+rt.error);
-          return;
-        }
-        alert("Your password has been emailed to you. Please check your email inbox, and possibly the junk mail folder, in a few minutes.");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log("Error in forgot password. "+textStatus+","+errorThrown);
-        $scope.$parent.pingServer();
-      },
-      complete: function() {
-        $scope.hideLogin();
-        $scope.$apply(function() { $scope.forgotPasswordStatus=false; });
-      }
-    });
+    if(!USE_AWS_LAMBDA) fpm.forgotPasswordNonLambda(); else fpm.forgotPasswordLambda();
   };
 
 

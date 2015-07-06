@@ -1,4 +1,5 @@
 ZBOOTA_SERVER_URL="http://genesis.akikieng.com/zboota-server"
+USE_AWS_LAMBDA=true;
 
 function an2id(a,n) { return a+'/'+n; }
 

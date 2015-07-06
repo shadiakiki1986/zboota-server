@@ -50,7 +50,7 @@ function Controller1($scope, $http) {
       if(dk2[k].hasOwnProperty("dm" )) delete dk2[k].dm ;
     });
 
-    if(false) getNonLambda(dk2); else getLambda(dk2);
+    if(!USE_AWS_LAMBDA) getNonLambda(dk2); else getLambda(dk2);
   };
 
   getNonLambda = function(dk) {
