@@ -3,45 +3,23 @@ function Controller1($scope, $http) {
   $scope.data={};
   $scope.awsMan = null;
   $scope.getStatus="None";
+  $scope.getError=false;
 
   $scope.dataTs=null;
   dataTsAll=[];
-  getParN=0;
-  getParStatus={};
-  $scope.getParStatusFn=function(a,n) {
-    return getParStatus[an2id(a,n)];
-  };
-  $scope.getPar = function() {
+  $scope.get = function() {
     // wrapper around $scope.get to call it in parallel
     if(!$scope.serverAvailable) return;
     if(Object.keys($scope.data).length==0) return;
 
     $scope.getStatus="Requesting";
     dataTsAll=[];
-    getParN=0;
-    getParStatus={};
 
-    if(true) {
-      // non-parallel retrieval
-      get($scope.data);
-    } else {
-      // parallel retrieval
-      Object.keys($scope.data).forEach(function(x) {
-        temp={};
-        temp[x]=$scope.data[x];
-        get(temp);
-      });
-    }
-  }
-  $scope.$on('loggedIn', function(event) { $scope.getPar(); });
-  $scope.getError={};
-  $scope.getErrorAny=function() { return Object.keys($scope.getError).length>0; };
-
-  get=function(dk) {
+    // non-parallel retrieval
+    dk=$scope.data;
     if(!$scope.serverAvailable) return;
     if(Object.keys(dk).length==0) return;
 
-    Object.keys(dk).forEach(function(k) { getParStatus[k]=true; });
     // drop isf, pml, dm fields before submission
     dk2=angular.fromJson(angular.toJson(dk));
     Object.keys(dk2).forEach(function(k) {
@@ -51,7 +29,10 @@ function Controller1($scope, $http) {
     });
 
     if(!USE_AWS_LAMBDA) getNonLambda(dk2); else getLambda(dk2);
-  };
+  }
+
+  $scope.$on('loggedIn', function(event) { $scope.get(); });
+
 
   getNonLambda = function(dk) {
   // dk: associative array of entries from $scope.data to retrieve
@@ -66,31 +47,33 @@ function Controller1($scope, $http) {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       }).
       success( function(rt) { $scope.getCore(rt,Object.keys(dk)); } ).
-      error( function(et) { $scope.getCoreError(et,dk); });
+      error( function(et) { $scope.getCoreError(et); });
   };
 
-  $scope.getCoreError = function(et,dk) {
-    getParN+=Object.keys(dk).length;
-
-    console.log("Error getting zboota from server. "+et);
-    Object.keys(dk).forEach(function(k) { getParStatus[k]=false; });
-    if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
-    $scope.pingServer();
+  $scope.getCoreError = function(et) {
+      console.log("Error getting zboota from server. "+et);
+      $scope.getError=et;
+      $scope.getStatus="None";
+      $scope.pingServer();
   };
 
   $scope.getCore = function(rt,ks) {
   // rt: return value from my api on success
   // ks: array of keys of originally passed associative array
 
-    //console.log("got data",rt);
-    getParN+=ks.length;
+    console.log("got data",rt);
+
+    if(rt.hasOwnProperty("errorMessage")) {
+      rt.error = rt.errorMessage;
+      delete rt.errorMessage;
+    }
 
     if(rt.hasOwnProperty("error")) {
       //alert("We're having trouble getting your car's zboota from the servers. Please try again later.");
       //console.log("error, "+rt.error);
-      ks.forEach(function(k) { $scope.getError[k]=rt.error; });
+      $scope.getError=rt.error;
     } else {
-      ks.forEach(function(k) { delete $scope.getError[k]; });
+      $scope.getError=false;
       if(Object.keys(rt).length>0) {
         for(var i in rt) {
           $scope.data[i].isf=rt[i].isf;
@@ -103,15 +86,12 @@ function Controller1($scope, $http) {
           dataTsAll.push(moment(rt[i].dataTs,'YYYY-MM-DD h:mm:ss').format('YYYY-MM-DD'));
         }
         $scope.dataTs=new Date(dataTsAll.unique().sort()[0]);//new Date();
-        // When all are retrieved, save to local storage
-        if(getParN==Object.keys($scope.data).length) {
-          window.localStorage.setItem('data',angular.toJson($scope.data));
-          window.localStorage.setItem('dataTs',angular.toJson($scope.dataTs));
-        }
+
+        window.localStorage.setItem('data',angular.toJson($scope.data));
+        window.localStorage.setItem('dataTs',angular.toJson($scope.dataTs));
       }
     }
-    ks.forEach(function(k) { getParStatus[k]=false; });
-    if(getParN==Object.keys($scope.data).length) $scope.getStatus="None";
+    $scope.getStatus="None";
   };
 
   $scope.dataHas=function(a,n) { return $scope.data.hasOwnProperty(an2id(a,n)); };
@@ -124,7 +104,6 @@ function Controller1($scope, $http) {
       $scope.dataTs=null;
       window.localStorage.removeItem('dataTs');
     }
-    delete $scope.getError[id];
   };
   $scope.momentFormat1=function(a) { return moment(a).format('MMMM Do YYYY, h:mm:ss a'); };
   $scope.momentFormat2=function(a) { return moment(a).format('YYYY-MM-DD'); };
@@ -151,7 +130,7 @@ function Controller1($scope, $http) {
 
   $scope.add=function() {
     $scope.addCore($scope.addC,false);
-    $scope.getPar(); // to get info of newly added car or edited car
+    $scope.get(); // to get info of newly added car or edited car
     $scope.addReset();
     $scope.hideAdd();
   };
@@ -194,8 +173,27 @@ function Controller1($scope, $http) {
 
   MAX_N_PING=3;
   $scope.pingStatus={a:0,b:0,n:0};
-  $scope.pingServer=function(force) {
+  pingSuccess = function(rt,skipBroadcastServerAvailable) {
+    $scope.$apply(function() {
+      $scope.serverAvailable=true;
+      if(!skipBroadcastServerAvailable) $scope.$broadcast('serverAvailable');
+      $scope.pingStatus.b=0;
+      $scope.pingStatus.a=1;
+    });
+  };
+  pingError = function(et) {
+    $scope.$apply(function() {
+      $scope.serverAvailable=false;
+      $scope.pingStatus.b=2;
+      $scope.pingStatus.a=1;
+      //alert("Server"+ZBOOTA_SERVER_URL+" unavailable. "+et+";");
+      console.log("Error: ",et);
+    });
+  };
+  $scope.pingServer=function(force,skipBroadcastServerAvailable) {
+    console.log("pingServer");
     $scope.serverAvailable=false;
+    $scope.awsMan.status="disconnected";
 
     if(force) $scope.pingStatus.n=0; // reset counter
     $scope.pingStatus.n+=1;
@@ -205,25 +203,34 @@ function Controller1($scope, $http) {
       return; 
     }
     $scope.pingStatus.b=1;
-    $http.get(ZBOOTA_SERVER_URL+'/api/get.php', {timeout:5000}).
-      success( function(rt) {
-        $scope.serverAvailable=true;
-        $scope.$broadcast('serverAvailable');
-        $scope.pingStatus.b=0;
-        $scope.pingStatus.a=1;
-      }).
-      error( function(et) {
-        $scope.serverAvailable=false;
-        $scope.pingStatus.b=2;
-        $scope.pingStatus.a=1;
-        //alert("Server"+ZBOOTA_SERVER_URL+" unavailable. "+et+";");
-      })
-    ;
+    if(!USE_AWS_LAMBDA) {
+	    $http.get(ZBOOTA_SERVER_URL+'/api/get.php', {timeout:5000})
+	      .success( pingSuccess )
+	      .error( pingError );
+    } else {
+      $scope.awsMan.connect(function() {
+        $scope.awsMan.invokeLambda("zboota-get",[{"n":"123","a":"B"}],function(err,data) {
+          console.log("lambda invoke conclusion",err,data);
+          if(err) pingError(err.message); else pingSuccess(data,skipBroadcastServerAvailable);
+        });
+      },pingError);
+    }
+
   };
 
   angular.element(document).ready(function () {
     $scope.hideAdd();
 
+    // cognito role
+    // Initialize the Amazon Cognito credentials provider
+    AWS.config.region = 'us-east-1'; // Region
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+	IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
+    });
+    AWS.config.httpOptions = { timeout: 5000 };
+    $scope.awsMan = new AwsManager();
+
+    // proceed
     $scope.pingServer();
     wlsgi1=window.localStorage.getItem('data');
     wlsgi2=window.localStorage.getItem('dataTs');
@@ -245,15 +252,6 @@ function Controller1($scope, $http) {
         $("#addC_n_error").hide();
       }
     });
-
-    // cognito role
-    // Initialize the Amazon Cognito credentials provider
-    AWS.config.region = 'us-east-1'; // Region
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
-    });
-    $scope.awsMan = new AwsManager();
-    $scope.awsMan.connect();
 
   });
 
@@ -319,7 +317,7 @@ function Controller1($scope, $http) {
 
       $scope.awsMan.invokeLambda('zboota-get',dk2,function(err, data) {
         if (err||data.StatusCode!=200) {
-          $scope.getCoreError(err,dk);
+          $scope.getCoreError(err.message); 
         } else {
           rt=angular.fromJson(data.Payload);
           //console.log("Lambda Success in getting zboota from server");

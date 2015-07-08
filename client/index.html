@@ -12,6 +12,8 @@
   <script src="js/AwsManager.js"></script>
   <script src="js/ForgotPasswordManager.js"></script>
   <script src="js/LoginManager.js"></script>
+  <script src="js/UpdateManager.js"></script>
+  <script src="js/NewUserManager.js"></script>
   <script src="js/Controller1.js"></script>
   <script src="js/Controller2.js"></script>
   <script src="js/Controller3.js"></script>
@@ -29,8 +31,8 @@
   <div ng-show="!serverAvailable&&pingStatus.a==0" class="alert alert-info text-center alert-dismissible">
     <span class="glyphicon glyphicon-flash"></span> &nbsp; Connecting ...  
   </div>
-  <div ng-show="getErrorAny()" class="alert alert-danger text-center">
-    <div ng-repeat="k in getError"><span class="glyphicon glyphicon-alert"></span> &nbsp; {{k}}</div>
+  <div ng-show="!!getError" class="alert alert-danger text-center">
+    <div><span class="glyphicon glyphicon-alert"></span> &nbsp; {{getError}}</div>
   </div>
 
   <div ng-controller="Controller3" ng-show="message" class="alert alert-info text-center alert-dismissible">
@@ -84,7 +86,7 @@
   <tr ng-show="!noData()">
     <th colspan=2 class="text-center">Zboota</th>
     <th>
-      <button ng-click="getPar()" ng-disabled="(getStatus!='None' || !serverAvailable)" class="btn btn-success btn-small" id="refreshBtn"><span class="glyphicon glyphicon-refresh"></span></button>
+      <button ng-click="get()" ng-disabled="(getStatus!='None' || !serverAvailable)" class="btn btn-success btn-small" id="refreshBtn"><span class="glyphicon glyphicon-refresh"></span></button>
     </th>
   </tr>
   <tbody ng-repeat="rd in data">
@@ -101,7 +103,7 @@
         <div ng-if="rd.isf">ISF: &nbsp; {{rd.isf}}</div>
         <div ng-if="rd.pml">PML: &nbsp; {{rd.pml}}</div>
         <!-- didnt work on android   <div ng-if="(!rd.isf || !rd.pml) && getStatus=='Requesting'" class="blinking">&#x25BC</div> -->
-        <div ng-if="(!rd.isf || !rd.pml || getParStatusFn(rd.a,rd.n)) && getStatus=='Requesting'"><img src="img/arrow_down.gif" /></div>
+        <div ng-if="getStatus=='Requesting'"><img src="img/arrow_down.gif" /></div>
       </td>
       <td rowspan={{rd.dm?2:1}}>
         <button ng-click="edit(rd.a,rd.n)" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span></button>

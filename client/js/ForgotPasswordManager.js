@@ -13,7 +13,7 @@ var ForgotPasswordManager = function($scope) {
   };
   this.forgotPasswordCoreError=function(msg) {
         console.log("Error in forgot password. "+msg);
-        //$scope.$parent.pingServer();
+        $scope.$parent.pingServer();
   };
 
   this.forgotPasswordNonLambda=function() {
