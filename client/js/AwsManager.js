@@ -16,7 +16,13 @@ AwsManager.prototype.connect = function(cbFn,cbErr) {
           if(cbErr!=null) cbErr(err);
           return;
         }
+
         self.status="connected";
+
+        // change the state to disconnected after 14 minutes since the Cognito token expires in 15 minutes
+        // Check related note in Controller1 / document ready function where I set the httpOptions timeout to 5000 milliseconds
+        setTimeout(function() { self.status="disconnected"; console.log("Manually setting status to disconnected"); }, 14*60000); 
+
         console.log("AWS Cognito connected",err);
         self.accessKeyId = AWS.config.credentials.accessKeyId;
         self.secretAccessKey = AWS.config.credentials.secretAccessKey;
@@ -43,22 +49,24 @@ AwsManager.prototype.invokeLambda = function(lfn,lp,cbFn) {
 // lp: lambda payload, javascript object, before JSON.stringify
 // cbFn: callback function, should accept err and data
 
-  if(this.status!="connected") return; // silent
+  this.connect(function() {
 
-  console.log("cognito connected, now lambda invoke");
-  // zboota-app IAM user
-  var lambda = new AWS.Lambda({
-      'accessKeyId' : this.accessKeyId,
-      'secretAccessKey'  : this.secretAccessKey,
-      'sessionToken' : this.sessionToken,
-      'region'  : "us-west-2"
+    console.log("cognito connected, now lambda invoke");
+    // zboota-app IAM user
+    var lambda = new AWS.Lambda({
+        'accessKeyId' : this.accessKeyId,
+        'secretAccessKey'  : this.secretAccessKey,
+        'sessionToken' : this.sessionToken,
+        'region'  : "us-west-2"
+    });
+  
+    // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#invoke-property
+    var params = {
+      FunctionName: lfn, /* required */
+      Payload: JSON.stringify(lp)
+    };
+    lambda.invoke(params, cbFn);
+
   });
-
-  // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Lambda.html#invoke-property
-  var params = {
-    FunctionName: lfn, /* required */
-    Payload: JSON.stringify(lp)
-  };
-  lambda.invoke(params, cbFn);
 
 }; // end invokeLambda
