@@ -38,17 +38,29 @@ li:before {
 	<h3>Status ...</h3>
 	<ul>
 	<li>Stats: <span id="response">-</span></li>
-	<li>Ping: <span id="status1" class="pend">N/A</span></li>
-	<li><a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status1b" class="pend">N/A</span></li>
-	<li><a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status1c" class="pend">N/A</span></li>
-	<li><a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status1d" class="pend">N/A</span></li>
-	<li>Retrieval of <a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status5a" class="pend">N/A</span></li>
-	<li>Retrieval of <a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status5b" class="pend">N/A</span></li>
-	<li>Retrieval of <a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status5c" class="pend">N/A</span></li>
-	<li>Anonymous retrieve: <span id="status2" class="pend">N/A</span></li>
-	<li>Login via App: <span id="status3" class="pend">N/A</span></li>
-	<li>Login via AWS EC2 PHP API: <span id="status4" class="pend">N/A</span></li>
-	<li>Login via AWS Lambda Nodejs API: <span id="status5" class="pend">N/A</span></li>
+	<li>Data sources
+		<ul>
+		<li><a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status1b" class="pend">N/A</span></li>
+		<li><a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status1c" class="pend">N/A</span></li>
+		<li><a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status1d" class="pend">N/A</span></li>
+		<li>Retrieval of <a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status5a" class="pend">N/A</span></li>
+		<li>Retrieval of <a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status5b" class="pend">N/A</span></li>
+		<li>Retrieval of <a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status5c" class="pend">N/A</span></li>
+		</ul>
+	</li>
+	<li>AWS EC2 PHP API:
+		<ul>
+		<li>Ping: <span id="status1" class="pend">N/A</span></li>
+		<li>Login via API: <span id="status4" class="pend">N/A</span></li>
+		<li>Login via App: <span id="status3" class="pend">N/A</span></li>
+		<li>Anonymous retrieve: <span id="status2" class="pend">N/A</span></li>
+		</ul>
+	</li>
+	<li>AWS Lambda Nodejs API:
+		<ul>
+		<li>Anonymous retrieve: <span id="status5" class="pend">N/A</span></li>
+		</ul>
+	</li>
 	<li>CI status:
 		<ul>
 		<li>php: <a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="travis-ci status"></a></li>
