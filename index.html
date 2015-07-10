@@ -250,18 +250,19 @@ req3a.onreadystatechange = function() {
         req4.open('GET', 'http://genesis.akikieng.com/zboota-server/api/login2.php?email=shadi_akiki_1986@hotmail.com&pass='+pass, true);
         req4.send(params);
         //------------------------------
-	awsMan.invokeLambda('zboota-login',{"email":"shadi_akiki_1986@hotmail.com","pass":pass},function(err, data) {
-	  if (err||data.StatusCode!=200) {
-	     document.getElementById('status62').innerHTML = "Error 1";
-	     document.getElementById('status62').className = "fail";
-	  } else {
-	    rt=data.Payload; // rt=JSON.parse(data.Payload);
-	    re=new RegExp("{.*}");
-	    document.getElementById('status62').innerHTML = re.test(rt) ? "Working" : "Error";
-	    document.getElementById('status62').className = re.test(rt) ? "pass" : "fail";
-	  }
-	});
-
+	setTimeout(function() {
+		awsMan.invokeLambda('zboota-login',{"email":"shadi_akiki_1986@hotmail.com","pass":pass},function(err, data) {
+		  if (err||data.StatusCode!=200) {
+		     document.getElementById('status62').innerHTML = "Error 1";
+		     document.getElementById('status62').className = "fail";
+		  } else {
+		    rt=data.Payload; // rt=JSON.parse(data.Payload);
+		    re=new RegExp("{.*}");
+		    document.getElementById('status62').innerHTML = re.test(rt) ? "Working" : "Error";
+		    document.getElementById('status62').className = re.test(rt) ? "pass" : "fail";
+		  }
+		});
+		}, 5000);
      }
    }
   }
