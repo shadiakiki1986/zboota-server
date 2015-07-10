@@ -59,7 +59,8 @@ li:before {
 	</li>
 	<li>AWS Lambda Nodejs API:
 		<ul>
-		<li>Anonymous retrieve: <span id="status5" class="pend">N/A</span></li>
+		<li>Anonymous retrieve: <span id="status61" class="pend">N/A</span></li>
+		<li>Login via API: <span id="status62" class="pend">N/A</span></li>
 		<li>CI status: <a href="http://travis-ci.org/shadiakiki1986/zboota-server-nodejs"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server-nodejs.png" alt="travis-ci status"></a></li>
 		</ul>
 	</li>
@@ -184,6 +185,13 @@ console.log(rt);
 req2.open('POST', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
 req2.send(JSON.stringify({"lpns":"[{\"a\":\"B\",\"n\":\"1234\",\"l\":\"test\",\"isf\":\"None\",\"pml\":\"None\"}]"}));
 //-------------------------------------------------
+AWS.config.region = 'us-east-1'; // Region
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
+});
+AWS.config.httpOptions = { timeout: 5000 }; 
+var awsMan = new AwsManager();
+//-------------------------------------------------
 var req3a = new XMLHttpRequest();
 req3a.onreadystatechange = function() {
  document.getElementById('status3').innerHTML="Pending";
@@ -241,6 +249,18 @@ req3a.onreadystatechange = function() {
         }
         req4.open('GET', 'http://genesis.akikieng.com/zboota-server/api/login2.php?email=shadi_akiki_1986@hotmail.com&pass='+pass, true);
         req4.send(params);
+        //------------------------------
+	awsMan.invokeLambda('zboota-login',{"email":"shadi_akiki_1986@hotmail.com","pass":pass},function(err, data) {
+	  if (err||data.StatusCode!=200) {
+	     document.getElementById('status62').innerHTML = "Error 1";
+	     document.getElementById('status62').className = "fail";
+	  } else {
+	    rt=data.Payload; // rt=JSON.parse(data.Payload);
+	    re=new RegExp("{.*}");
+	    document.getElementById('status62').innerHTML = re.test(rt) ? "Working" : "Error";
+	    document.getElementById('status62').className = re.test(rt) ? "pass" : "fail";
+	  }
+	});
 
      }
    }
@@ -274,21 +294,15 @@ req5.onreadystatechange = function() {
 req5.open('GET', 'http://genesis.akikieng.com/zboota-server/api/getWebAvailability.php', true);
 req5.send(null);
 //-------------------------------------------------
-AWS.config.region = 'us-east-1'; // Region
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
-});
-AWS.config.httpOptions = { timeout: 5000 }; 
-var awsMan = new AwsManager();
 awsMan.invokeLambda('zboota-get',[{"n":"123","a":"B"}],function(err, data) {
   if (err||data.StatusCode!=200) {
-     document.getElementById('status5').innerHTML = "Error 1";
-     document.getElementById('status5').className = "fail";
+     document.getElementById('status61').innerHTML = "Error 1";
+     document.getElementById('status61').className = "fail";
   } else {
     rt=data.Payload; // rt=JSON.parse(data.Payload);
     re=new RegExp("{.*}");
-    document.getElementById('status5').innerHTML = re.test(rt) ? "Working" : "Error";
-    document.getElementById('status5').className = re.test(rt) ? "pass" : "fail";
+    document.getElementById('status61').innerHTML = re.test(rt) ? "Working" : "Error";
+    document.getElementById('status61').className = re.test(rt) ? "pass" : "fail";
   }
 });
 
