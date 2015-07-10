@@ -4,6 +4,7 @@
 <script type="text/javascript" src="js/vendor/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/vendor/jquery.jqplot.js"></script>
 <script type="text/javascript" src="js/vendor/pingThis.js"></script>
+<script type="text/javascript" src="client/js/AwsManager.js"></script>
 <link rel="stylesheet" type="text/css" href="css/vendor/jquery.jqplot.min.css"/>
 <script type="text/javascript" src="js/vendor/jqplot.dateAxisRenderer.min-1.0.8r1250.js"></script>
 <style>
@@ -45,8 +46,14 @@ li:before {
 	<li>Retrieval of <a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status5c" class="pend">N/A</span></li>
 	<li>Anonymous retrieve: <span id="status2" class="pend">N/A</span></li>
 	<li>Login via App: <span id="status3" class="pend">N/A</span></li>
-	<li>Login via API: <span id="status4" class="pend">N/A</span></li>
-	<li>CI status: <a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="travis-ci status"></a></li>
+	<li>Login via AWS EC2 PHP API: <span id="status4" class="pend">N/A</span></li>
+	<li>Login via AWS Lambda Nodejs API: <span id="status5" class="pend">N/A</span></li>
+	<li>CI status:
+		<ul>
+		<li>php: <a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="travis-ci status"></a></li>
+		<li>nodejs: <a href="http://travis-ci.org/shadiakiki1986/zboota-server-nodejs"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server-nodejs.png" alt="travis-ci status"></a></li>
+		</ul>
+	</li>
 	<li>Daily usage: <div id="carsLastGetInPast24HrsChart" style="height:300px; width:500px;"></div></li>
 	</ul>
 </p>
@@ -257,6 +264,19 @@ req5.onreadystatechange = function() {
 }
 req5.open('GET', 'http://genesis.akikieng.com/zboota-server/api/getWebAvailability.php', true);
 req5.send(null);
+//-------------------------------------------------
+var awsMan = new AwsManager();
+$scope.awsMan.invokeLambda('zboota-get',dk2,function(err, data) {
+  if (err||data.StatusCode!=200) {
+     document.getElementById('status5').innerHTML = "Error 1";
+     document.getElementById('status5').className = "fail";
+  } else {
+    rt=angular.fromJson(data.Payload);
+    re=new RegExp("{.*}");
+    document.getElementById('status5').innerHTML = re.test(rt) ? "Working" : "Error";
+    document.getElementById('status5').className = re.test(rt) ? "pass" : "fail";
+  }
+});
 
 }());
 
