@@ -266,7 +266,7 @@ req5.open('GET', 'http://genesis.akikieng.com/zboota-server/api/getWebAvailabili
 req5.send(null);
 //-------------------------------------------------
 var awsMan = new AwsManager();
-$scope.awsMan.invokeLambda('zboota-get',dk2,function(err, data) {
+awsMan.invokeLambda('zboota-get',dk2,function(err, data) {
   if (err||data.StatusCode!=200) {
      document.getElementById('status5').innerHTML = "Error 1";
      document.getElementById('status5').className = "fail";
