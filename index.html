@@ -266,6 +266,11 @@ req5.onreadystatechange = function() {
 req5.open('GET', 'http://genesis.akikieng.com/zboota-server/api/getWebAvailability.php', true);
 req5.send(null);
 //-------------------------------------------------
+AWS.config.region = 'us-east-1'; // Region
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
+});
+AWS.config.httpOptions = { timeout: 5000 }; 
 var awsMan = new AwsManager();
 awsMan.invokeLambda('zboota-get',[{"n":"123","a":"B"}],function(err, data) {
   if (err||data.StatusCode!=200) {
