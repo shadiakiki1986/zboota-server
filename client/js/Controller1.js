@@ -54,7 +54,7 @@ function Controller1($scope, $http) {
       console.log("Error getting zboota from server. "+et);
       $scope.getError=et;
       $scope.getStatus="None";
-      $scope.pingServer();
+      if(et=="Timeout") $scope.pingServer(false,true); else $scope.pingServer();
   };
 
   $scope.getCore = function(rt,ks) {
