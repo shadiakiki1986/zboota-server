@@ -4,7 +4,7 @@ require_once dirname(__FILE__).'/../../config.php';
 require_once ROOT.'/lib/Statistics.php';
 require_once ROOT.'/lib/connectDynamodb.php';
 
-$dynamodbAllowed=["carsLastGetInPast1Hr","carsLastGetInPast24Hrs"];
+$dynamodbAllowed=array("carsLastGetInPast1Hr","carsLastGetInPast24Hrs");
 
 function showUsage() {
 	echo "Usage: php uploadStatistics.php [".implode("|",$GLOBALS['dynamodbAllowed'])."]\n";
