@@ -4,7 +4,7 @@ require_once dirname(__FILE__).'/../../config.php';
 require_once ROOT.'/lib/Statistics.php';
 require_once ROOT.'/lib/mailSend.php';
 
-$chosenAllowed=["all","summary","nocars","locked","mechCars","mechUsers","orphans","photos","retCars","retUsers"];
+$chosenAllowed=array("all","summary","nocars","locked","mechCars","mechUsers","orphans","photos","retCars","retUsers");
 
 function showUsage() {
 	echo "Usage: php showStatistics.php (console|email) (".implode("|",$GLOBALS['chosenAllowed']).")\n";
@@ -18,46 +18,46 @@ if(isset($argc)&&$argc>1) {
 	showUsage();
 }
 
-if(!in_array($format,["console","email"])) showUsage();
+if(!in_array($format,array("console","email"))) showUsage();
 if(!in_array($chosen,$chosenAllowed)) showUsage();
 
 if($format=="email") ob_start();
 
 $ddb=new Statistics();
 
-if(in_array($chosen,["all","summary"])) {
+if(in_array($chosen,array("all","summary"))) {
 	$ddb->printSummary();
 }
 
-if(in_array($chosen,["all","nocars"])) {
+if(in_array($chosen,array("all","nocars"))) {
 	echo "-----------------\n";
 	$ddb->printNoCars();
 }
-if(in_array($chosen,["all","locked"])) {
+if(in_array($chosen,array("all","locked"))) {
 	echo "-----------------\n";
 	$ddb->printLocked();
 }
-if(in_array($chosen,["all","mechCars"])) {
+if(in_array($chosen,array("all","mechCars"))) {
 	echo "-----------------\n";
 	$ddb->printMechaniqueCars();
 }
-if(in_array($chosen,["all","mechUsers"])) {
+if(in_array($chosen,array("all","mechUsers"))) {
 	echo "-----------------\n";
 	$ddb->printMechaniqueUsers();
 }
-if(in_array($chosen,["all","orphans"])) {
+if(in_array($chosen,array("all","orphans"))) {
 	echo "-----------------\n";
 	$ddb->printOrphans();
 }
-if(in_array($chosen,["all","photos"])) {
+if(in_array($chosen,array("all","photos"))) {
 	echo "-----------------\n";
 	$ddb->printPhotos();
 }
-if(in_array($chosen,["all","retCars"])) {
+if(in_array($chosen,array("all","retCars"))) {
 	echo "-----------------\n";
 	$ddb->printReturningCars();
 }
-if(in_array($chosen,["all","retUsers"])) {
+if(in_array($chosen,array("all","retUsers"))) {
 	echo "-----------------\n";
 	$ddb->printReturningUsers();
 }
