@@ -7,6 +7,8 @@ require_once ROOT.'/lib/connectDynamodb.php';
 require_once ROOT.'/lib/mailSend.php';
 require_once ROOT.'/lib/getZbootaUsers.php';
 
+echo date("Y-m-d H:i")." : Sync start\n";
+
 // get user data
 $ddb=connectDynamoDb();
 $lpns=getZbootaUsers($ddb);
