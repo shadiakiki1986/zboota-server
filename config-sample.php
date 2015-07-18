@@ -23,7 +23,7 @@ define('MAILGUN_PUBLIC_KEY','abcdefghi');
 define('MAX_PASS_FAIL',3);
 
 # backup location
-define('BKP_ZBOOTA','/home/shadi/.zboota-server');
+define('BKP_ZBOOTA','/home/shadi/.zboota-server'); # Important to explicitly spell out "/home/shadi" and not just use a tilde
 
 define("MY_CURL_TIMEOUT",10);
 # no longer using this in favor of file in s3 # define('APP_HEADER_MESSAGE','/home/shadi/.zboota-server/headerMessage.txt'); // make sure that www-data has write access
