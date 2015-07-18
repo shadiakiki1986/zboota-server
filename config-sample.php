@@ -31,3 +31,7 @@ define("MY_CURL_TIMEOUT",10);
 # S3
 define('S3_BUCKET',"zboota-server");
 define('S3_FOLDER',"photos");
+
+# Check note in
+# http://php.net/manual/en/function.date-default-timezone-set.php
+date_default_timezone_set('UTC');
