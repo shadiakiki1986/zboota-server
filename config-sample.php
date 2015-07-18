@@ -19,9 +19,6 @@ define('MAILGUN_DOMAIN','abcdefghi');
 define('MAILGUN_FROM','abcdefghi');
 define('MAILGUN_PUBLIC_KEY','abcdefghi');
 
-# Zboota-server URL
-define('ZBOOTA_SERVER_URL','http://abcdefghijkl');
-
 # Maximum number of wrong passwords before lock
 define('MAX_PASS_FAIL',3);
 
@@ -29,7 +26,7 @@ define('MAX_PASS_FAIL',3);
 define('BKP_ZBOOTA','/home/shadi/.zboota-server');
 
 define("MY_CURL_TIMEOUT",10);
-define('APP_HEADER_MESSAGE','/home/shadi/.zboota-server/headerMessage.txt'); // make sure that www-data has write access
+# no longer using this in favor of file in s3 # define('APP_HEADER_MESSAGE','/home/shadi/.zboota-server/headerMessage.txt'); // make sure that www-data has write access
 
 # S3
 define('S3_BUCKET',"zboota-server");
