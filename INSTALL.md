@@ -26,6 +26,7 @@ but instead, I''m just requiring its global installation
 * git clone https://shadiakiki1986@github.org/shadiakiki1986/zboota-server
 * cd zboota-server
 * composer install
+* cp config-sample.php to config.php and modify values as needed
 * Append to cron:
  * note: May need to mkdir /home/ubuntu/.zboota-server for below logs
 
