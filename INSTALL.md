@@ -27,15 +27,19 @@ but instead, I''m just requiring its global installation
 * cd zboota-server
 * composer install
 * cp config-sample.php to config.php and modify values as needed
-* Append to cron:
- * note: May need to mkdir /home/ubuntu/.zboota-server for below logs
 
-    0 6 * * 1 php /home/ubuntu/zboota-server/scripts/backupTables.php >> /home/ubuntu/.zboota-server/backup.log 2>&1
-    2 6 * * 1 php /home/ubuntu/zboota-server/scripts/backupPhotos.php >> /home/ubuntu/.zboota-server/backup.log 2>&1
-    4 6 * * 1 php /home/ubuntu/zboota-server/scripts/statistics/showStatistics.php email all 2>&1
-    5 6 * * * php /home/ubuntu/zboota-server/scripts/syncAll.php >> /home/ubuntu/.zboota-server/syncAll.log 2>&1
-    3 6 * * * php /home/ubuntu/zboota-server/scripts/statistics/uploadStatistics.php carsLastGetInPast24Hrs 2>&1
-    3 * * * * php /home/ubuntu/zboota-server/scripts/statistics/uploadStatistics.php carsLastGetInPast1Hr 2>&1
+## Cron schedule
+* mkdir ~/.zboota-server
+* mkdir ~/.zboota-server/ddb-bkps # Or whatever BKP_ZBOOTA is set to
+* Append to cron:
+ * note: May need to mkdir ~/.zboota-server for below logs
+
+    0 6 * * 1 php ~/zboota-server/scripts/backupTables.php >> ~/.zboota-server/backup.log 2>&1
+    2 6 * * 1 php ~/zboota-server/scripts/backupPhotos.php >> ~/.zboota-server/backup.log 2>&1
+    4 6 * * 1 php ~/zboota-server/scripts/statistics/showStatistics.php email all 2>&1
+    5 6 * * * php ~/zboota-server/scripts/syncAll.php >> ~/.zboota-server/syncAll.log 2>&1
+    3 6 * * * php ~/zboota-server/scripts/statistics/uploadStatistics.php carsLastGetInPast24Hrs 2>&1
+    3 * * * * php ~/zboota-server/scripts/statistics/uploadStatistics.php carsLastGetInPast1Hr 2>&1
 
 # Uninstall
 * crontab -e # remove lines appended in installation
