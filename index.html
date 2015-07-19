@@ -64,6 +64,7 @@ li:before {
 		<li>CI status: <a href="http://travis-ci.org/shadiakiki1986/zboota-server-nodejs"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server-nodejs.png" alt="travis-ci status"></a></li>
 		</ul>
 	</li>
+	<li>Registered users' data min date: <span id="status7" class="pend">N/A</span></li>
 	<li>Daily usage: <div id="carsLastGetInPast24HrsChart" style="height:300px; width:500px;"></div></li>
 	</ul>
 </p>
@@ -306,6 +307,29 @@ awsMan.invokeLambda('zboota-get',[{"n":"123","a":"B"}],function(err, data) {
     document.getElementById('status61').className = re.test(rt) ? "pass" : "fail";
   }
 });
+//-------------------------------------------------
+var req7 = new XMLHttpRequest();
+req7.onreadystatechange = function() {
+ if (this.readyState == 4) {
+   if (this.status != 200) {
+     document.getElementById('status7').innerHTML = "Error";
+     document.getElementById('status7').className = "fail";
+   } else {
+     a = this.responseText.replace('"','').replace('"','');
+     var todayD=new Date().toISOString().substr(0,10);
+     var yesterdayD=new Date();
+     yesterdayD.setDate(yesterdayD.getDate()-1);
+     yesterdayD=yesterdayD.toISOString().substr(0,10);
+     var isok = a==todayD || a==yesterdayD;
+     document.getElementById('status7').innerHTML = (isok ? "OK" : "Stale")+" ("+a+")";
+     document.getElementById('status7').className = isok ? "pass" : "fail";
+   }
+ }
+}
+// Required setting up the endpoing + enabling CORS on it
+// http://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html
+req7.open('GET', 'https://v029nrk9h7.execute-api.us-west-2.amazonaws.com/prod/zboota-regMinDate', true);
+req7.send(null);
 
 }());
 
