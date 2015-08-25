@@ -154,8 +154,8 @@ awsMan.invokeLambda('zboota-testUserPassword',{},function(err, data) {
             	axes:{
             		xaxis:{
             		  renderer:$.jqplot.DateAxisRenderer,
-            		 tickOptions:{formatString:'%b %#d\n%Y'},
-            		  tickInterval:'1 week'
+            		 tickOptions:{formatString:'%b \n%Y'}, // %b %#d\n%Y
+            		  tickInterval:'1 month'
             		}
             	},
                     seriesDefaults: {
@@ -168,7 +168,30 @@ awsMan.invokeLambda('zboota-testUserPassword',{},function(err, data) {
                     legend: { show:true, location: 'nw', labels: ["Total","New"] }
                   }
                 );
-             }
+              }
+ 
+              //--------------------------------
+              awsMan.invokeLambda('zboota-webavailability',{},function(err,data) {
+               avail = JSON.parse(data.Payload);
+
+               if (err||data.StatusCode!=200||avail.hasOwnProperty("errorMessage")) {
+     document.getElementById('status5a').innerHTML = "Error";
+     document.getElementById('status5a').className = "fail";
+     document.getElementById('status5b').innerHTML = "Error";
+     document.getElementById('status5b').className = "fail";
+     document.getElementById('status5c').innerHTML = "Error";
+     document.getElementById('status5c').className = "fail";
+               } else {
+    document.getElementById('status5a').innerHTML = avail.pml==1 ? "On" : "Off";
+    document.getElementById('status5a').className = avail.pml==1 ? "pass" : "fail";
+    document.getElementById('status5b').innerHTML = avail.isf==1?"On":"Off";
+    document.getElementById('status5b').className = avail.isf==1 ? "pass" : "fail";
+    document.getElementById('status5c').innerHTML = avail.dawlati==1?"On":"Off";
+    document.getElementById('status5c').className = avail.dawlati==1 ? "pass" : "fail";
+
+               }
+              });
+
             }); // invoke lambda statistics
 
           }
@@ -179,30 +202,6 @@ awsMan.invokeLambda('zboota-testUserPassword',{},function(err, data) {
   }
 });
 
-//-------------------------------------------------
-var req5 = new XMLHttpRequest();
-req5.onreadystatechange = function() {
- if (this.readyState == 4) {
-   if (this.status != 200) {
-     document.getElementById('status5a').innerHTML = "Error";
-     document.getElementById('status5a').className = "fail";
-     document.getElementById('status5b').innerHTML = "Error";
-     document.getElementById('status5b').className = "fail";
-     document.getElementById('status5c').innerHTML = "Error";
-     document.getElementById('status5c').className = "fail";
-   } else {
-    avail=JSON.parse(this.responseText);
-    document.getElementById('status5a').innerHTML = avail.pml==1 ? "On" : "Off";
-    document.getElementById('status5a').className = avail.pml==1 ? "pass" : "fail";
-    document.getElementById('status5b').innerHTML = avail.isf==1?"On":"Off";
-    document.getElementById('status5b').className = avail.isf==1 ? "pass" : "fail";
-    document.getElementById('status5c').innerHTML = avail.dawlati==1?"On":"Off";
-    document.getElementById('status5c').className = avail.dawlati==1 ? "pass" : "fail";
-   }
- }
-}
-req5.open('GET', 'http://genesis.akikieng.com/zboota-server/api/getWebAvailability.php', true);
-req5.send(null);
 //-------------------------------------------------
 var req7 = new XMLHttpRequest();
 req7.onreadystatechange = function() {
