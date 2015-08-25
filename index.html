@@ -50,10 +50,10 @@ li:before {
 	</li>
 	<li>AWS EC2 PHP API:
 		<ul>
-		<li>Ping: <span id="status1" class="pend">N/A</span></li>
-		<li>Login via API: <span id="status4" class="pend">N/A</span></li>
-		<li>Login via App: <span id="status3" class="pend">N/A</span></li>
-		<li>Anonymous retrieve: <span id="status2" class="pend">N/A</span></li>
+		<li><strike>Ping: <span id="status1" class="pend">N/A</span></strike></li>
+		<li><strike>Login via API: <span id="status4" class="pend">N/A</span></strike></li>
+		<li><strike>Login via App: <span id="status3" class="pend">N/A</span></strike></li>
+		<li><strike>Anonymous retrieve: <span id="status2" class="pend">N/A</span></strike></li>
 		<li>CI status: <a href="http://travis-ci.org/shadiakiki1986/zboota-server"><img src="https://secure.travis-ci.org/shadiakiki1986/zboota-server.png" alt="travis-ci status"></a></li>
 		</ul>
 	</li>
@@ -108,17 +108,6 @@ req0.onreadystatechange = function() {
 req0.open('GET', 'http://genesis.akikieng.com/zboota-server/api/statistics.php', true);
 req0.send(null);
 //-------------------------------------------------
-var req1 = new XMLHttpRequest();
-req1.onreadystatechange = function() {
- document.getElementById('status1').innerHTML="Pending";
- if (this.readyState == 4) {
-   document.getElementById('status1').innerHTML = this.status!=200 ? "Error" : "Working";
-   document.getElementById('status1').className = this.status!=200 ? "fail" : "pass";
- }
-}
-req1.open('GET', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
-req1.send(null);
-//-------------------------------------------------
 pingThis("http://www.parkmeterlebanon.com/Picutres/header_website_copy.jpg",
 	function() { document.getElementById('status1b').innerHTML="Pending"; },
 	function() {
@@ -155,37 +144,6 @@ pingThis("http://www.dawlati.gov.lb/dawlati-standard-theme/images/ministry/dawla
 	}
 ).init();
 //-------------------------------------------------
-var req2 = new XMLHttpRequest();
-req2.onreadystatechange = function() {
- document.getElementById('status2').innerHTML="Pending";
- if (this.readyState == 4) {
-   if (this.status != 200) {
-     document.getElementById('status2').innerHTML = "Error 1";
-     document.getElementById('status2').className = "fail";
-   } else {
-     if(this.responseText=="") {
-       document.getElementById('status2').innerHTML = "Error 2";
-       document.getElementById('status2').className = "fail";
-     } else {
-       rt=JSON.parse(this.responseText);
-console.log(rt);
-       if(rt.hasOwnProperty("error") || !rt.hasOwnProperty("B/1234")) {
-         document.getElementById('status2').innerHTML = "Error";
-         document.getElementById('status2').className = "fail";
-       } else {
-         rt=rt["B/1234"];
-         cond=rt.pml=="None" && rt.n=="1234" && rt.a=="B" && (rt.isf=="None"|| /\d{2}\/\d{2}\/\d{2}/.test(rt.isf));
-         document.getElementById('status2').innerHTML = cond ? "Working" : "Error";
-         document.getElementById('status2').className = cond ? "pass" : "fail";
-       }
-     }
-   }
-  }
-
-}
-req2.open('POST', 'http://genesis.akikieng.com/zboota-server/api/get2.php', true);
-req2.send(JSON.stringify({"lpns":"[{\"a\":\"B\",\"n\":\"1234\",\"l\":\"test\",\"isf\":\"None\",\"pml\":\"None\"}]"}));
-//-------------------------------------------------
 AWS.config.region = 'us-east-1'; // Region
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: 'us-east-1:639fd2a8-8277-4726-b9b3-3231ed0d5f71',
@@ -193,84 +151,39 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 AWS.config.httpOptions = { timeout: 5000 }; 
 var awsMan = new AwsManager();
 //-------------------------------------------------
-var req3a = new XMLHttpRequest();
-req3a.onreadystatechange = function() {
- document.getElementById('status3').innerHTML="Pending";
- if (this.readyState == 4) {
-   if (this.status != 200) {
-     document.getElementById('status3').innerHTML = "Error 1";
-     document.getElementById('status3').className = "fail";
-     document.getElementById('status4').innerHTML = "Error 1";
-     document.getElementById('status4').className = "fail";
-   } else {
-     if(this.responseText=="") {
-       document.getElementById('status3').innerHTML = "Error 2";
-       document.getElementById('status3').className = "fail";
-       document.getElementById('status4').innerHTML = "Error 2";
-       document.getElementById('status4').className = "fail";
-     } else {
-        pass=this.responseText;
-        //-----------------------------
-        var req3 = new XMLHttpRequest();
-        req3.onreadystatechange = function() {
-         document.getElementById('status3').innerHTML="Pending";
-         if (this.readyState == 4) {
-           if (this.status != 200) {
-             document.getElementById('status3').innerHTML = "Error 3";
-             document.getElementById('status3').className = "fail";
-           } else {
-		re=new RegExp("{.*}");
-               document.getElementById('status3').innerHTML = re.test(this.responseText) ? "Working" : "Error";
-               document.getElementById('status3').className = re.test(this.responseText) ? "pass" : "fail";
-           }
-          }
+awsMan.invokeLambda('zboota-testUserPassword',{},function(err, data) {
+  if (err||data.StatusCode!=200) {
+     document.getElementById('status62').innerHTML = "Error 1";
+     document.getElementById('status62').className = "fail";
+  } else {
+    pass=data.Payload; // rt=JSON.parse(data.Payload);
+    awsMan.invokeLambda('zboota-login',{"email":"shadi_akiki_1986@hotmail.com","pass":pass},function(err, data) {
+      if (err||data.StatusCode!=200) {
+         document.getElementById('status62').innerHTML = "Error 1";
+         document.getElementById('status62').className = "fail";
+      } else {
+        rt=data.Payload; // rt=JSON.parse(data.Payload);
+        re=new RegExp("{.*}");
+        document.getElementById('status62').innerHTML = re.test(rt) ? "Working" : "Error";
+        document.getElementById('status62').className = re.test(rt) ? "pass" : "fail";
 
-        }
-        req3.open('POST', 'http://genesis.akikieng.com/zboota-server/api/login.php', true);
-        params="email=shadi_akiki_1986@hotmail.com&pass="+pass;
-        req3.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req3.setRequestHeader("Content-length", params.length);
-        req3.setRequestHeader("Connection", "close");
-        req3.send(params);
-        //---------------------------
-        var req4 = new XMLHttpRequest();
-        req4.onreadystatechange = function() {
-         document.getElementById('status4').innerHTML="Pending";
-         if (this.readyState == 4) {
-           if (this.status != 200) {
-             document.getElementById('status4').innerHTML = "Error 3";
-             document.getElementById('status4').className = "fail";
-           } else {
-               cond=new RegExp("<table><tr><th>Letter</th><th>Number</th><th>Label</th><th>ISF</th><th>PML</th></tr>.*</table>");
-               document.getElementById('status4').innerHTML = cond.test(this.responseText) ? "Working" : "Error";
-               document.getElementById('status4').className = cond.test(this.responseText) ? "pass" : "fail";
-           }
+        awsMan.invokeLambda('zboota-get',[{"n":"123","a":"B"}],function(err, data) {
+          if (err||data.StatusCode!=200) {
+             document.getElementById('status61').innerHTML = "Error 1";
+             document.getElementById('status61').className = "fail";
+          } else {
+            rt=data.Payload; // rt=JSON.parse(data.Payload);
+            re=new RegExp("{.*}");
+            document.getElementById('status61').innerHTML = re.test(rt) ? "Working" : "Error";
+            document.getElementById('status61').className = re.test(rt) ? "pass" : "fail";
           }
+        });
 
-        }
-        req4.open('GET', 'http://genesis.akikieng.com/zboota-server/api/login2.php?email=shadi_akiki_1986@hotmail.com&pass='+pass, true);
-        req4.send(params);
-        //------------------------------
-	setTimeout(function() {
-		awsMan.invokeLambda('zboota-login',{"email":"shadi_akiki_1986@hotmail.com","pass":pass},function(err, data) {
-		  if (err||data.StatusCode!=200) {
-		     document.getElementById('status62').innerHTML = "Error 1";
-		     document.getElementById('status62').className = "fail";
-		  } else {
-		    rt=data.Payload; // rt=JSON.parse(data.Payload);
-		    re=new RegExp("{.*}");
-		    document.getElementById('status62').innerHTML = re.test(rt) ? "Working" : "Error";
-		    document.getElementById('status62').className = re.test(rt) ? "pass" : "fail";
-		  }
-		});
-		}, 10000);
-     }
-   }
+      }
+    });
   }
+});
 
-}
-req3a.open('GET', 'http://genesis.akikieng.com/zboota-server/api/testUserPassword.php', true);
-req3a.send(null);
 //-------------------------------------------------
 var req5 = new XMLHttpRequest();
 req5.onreadystatechange = function() {
@@ -295,18 +208,6 @@ req5.onreadystatechange = function() {
 }
 req5.open('GET', 'http://genesis.akikieng.com/zboota-server/api/getWebAvailability.php', true);
 req5.send(null);
-//-------------------------------------------------
-awsMan.invokeLambda('zboota-get',[{"n":"123","a":"B"}],function(err, data) {
-  if (err||data.StatusCode!=200) {
-     document.getElementById('status61').innerHTML = "Error 1";
-     document.getElementById('status61').className = "fail";
-  } else {
-    rt=data.Payload; // rt=JSON.parse(data.Payload);
-    re=new RegExp("{.*}");
-    document.getElementById('status61').innerHTML = re.test(rt) ? "Working" : "Error";
-    document.getElementById('status61').className = re.test(rt) ? "pass" : "fail";
-  }
-});
 //-------------------------------------------------
 var req7 = new XMLHttpRequest();
 req7.onreadystatechange = function() {
