@@ -29,3 +29,11 @@
 * Commit a08093d had passed in build 41 (https://travis-ci.org/shadiakiki1986/zboota-server/builds/63161583)
 * however, building it again, via the whitelist entry in the travis yml file, seems to fail now in build 43 (https://travis-ci.org/shadiakiki1986/zboota-server/builds/63524924)
 * I''ll need to understand what is going on .. later
+
+# Devop note: Large amount of email notifications
+I have set a breaker in the scripts/sendNotification.php script for the number of emails that can be sent in one day.
+The reason I have this is that if something goes wrong and all of a sudden the server wants to email an obscene number of registrants, this would stop it and notify me to check.
+The limit at the time of this writing (2015-10-15) is at 10, and I just moved it up to 20.
+If in the future 20 is not enough, just edit the ''zboota-server/config.php'' file for the `NOTIF_BREAKER` variable.
+Also, to check a simulation of what would be sent, edit the config.php for `NOTIF_SIMULATION` to be true, then run `php scripts/sendNotifications.php`.
+Note that this is currently installed on an EC2 instance that runs for 1 hour daily in the morning (managed by OpsWorks)

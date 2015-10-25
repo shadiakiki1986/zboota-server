@@ -35,3 +35,9 @@ define('S3_FOLDER',"photos");
 # Check note in
 # http://php.net/manual/en/function.date-default-timezone-set.php
 date_default_timezone_set('UTC');
+
+# Notification breaker
+define('NOTIF_BREAKER',10);
+
+# Notifications: run simulation
+define("NOTIF_SIMULATION",false);
