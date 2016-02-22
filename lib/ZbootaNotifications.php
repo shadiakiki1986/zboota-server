@@ -2,7 +2,6 @@
 
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/getZbootaUsers.php';
-require_once ROOT.'/lib/connectDynamodb.php';
 require_once ROOT.'/lib/mailSend.php';
 
 class ZbootaNotifications {

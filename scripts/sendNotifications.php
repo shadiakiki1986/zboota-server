@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/ZbootaNotifications.php';
+require_once ROOT.'/lib/connectDynamodb.php';
 
 if(!defined("NOTIF_SIMULATION")) define("NOTIF_SIMULATION",false);
 if(!defined("NOTIF_BREAKER")) define("NOTIF_BREAKER",10);
