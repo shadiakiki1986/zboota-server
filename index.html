@@ -40,10 +40,10 @@ li:before {
 	<li>Stats: <span id="response">-</span></li>
 	<li>Data sources
 		<ul>
-		<li><a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status1b" class="pend">N/A</span></li>
+		<li><a href="http://www.parkmeterlebanon.com/StatementOfAccount">www.parkmeterlebanon.com</a>: <span id="status1b" class="pend">N/A</span></li>
 		<li><a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status1c" class="pend">N/A</span></li>
 		<li><a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status1d" class="pend">N/A</span></li>
-		<li>Retrieval of <a href="http://www.parkmeterlebanon.com/statment_of_account.aspx">www.parkmeterlebanon.com</a>: <span id="status5a" class="pend">N/A</span></li>
+		<li>Retrieval of <a href="http://www.parkmeterlebanon.com/StatementOfAccount">www.parkmeterlebanon.com</a>: <span id="status5a" class="pend">N/A</span></li>
 		<li>Retrieval of <a href="http://isf.gov.lb/en/speedtickets">www.isf.gov.lb</a>: <span id="status5b" class="pend">N/A</span></li>
 		<li>Retrieval of <a href="http://www.dawlati.gov.lb/en/mecanique">www.dawlati.gov.lb</a>: <span id="status5c" class="pend">N/A</span></li>
 		</ul>
@@ -70,7 +70,10 @@ li:before {
 </p>
 <script>
 (function() {
-pingThis("http://www.parkmeterlebanon.com/Picutres/header_website_copy.jpg",
+// The URL below is just an image URL from the website that I use to check if the website is on
+// before 2017-03 "http://www.parkmeterlebanon.com/Picutres/header_website_copy.jpg",
+var pml_ping_url = "http://www.parkmeterlebanon.com/Content/Images/header_website.jpg";
+pingThis(pml_ping_url,
 	function() { document.getElementById('status1b').innerHTML="Pending"; },
 	function() {
 		document.getElementById('status1b').innerHTML = "Error";
@@ -235,7 +238,7 @@ req7.send(null);
 <li>add multiple car plate numbers</li>
 <li>see any outstanding violations with
 	<a href="http://www.isf.gov.lb/en/speedtickets"><img src="img/isf-top_logo_en.png" alt="ISF" /></a>
-	and <a href="http://www.parkmeterlebanon.com/statment_of_account.aspx"><img src="img/pml-header_website_copy.jpg" alt="PML" /></a>.
+	and <a href="http://www.parkmeterlebanon.com/StatementOfAccount"><img src="img/pml-header_website_copy.jpg" alt="PML" /></a>.
 </li>
 <li>see your cars' mechanique schedule/fee from 
 	<a href="http://www.dawlati.gov.lb/en/mecanique"><img src="img/dawlati_en.png" alt="Dawlati"/></a>
