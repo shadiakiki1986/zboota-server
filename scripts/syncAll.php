@@ -1,5 +1,7 @@
 <?php
 
+throw new \Exception("Deprecated script in favor of zboota-server-nodejs sync");
+
 require_once dirname(__FILE__).'/../config.php';
 require_once ROOT.'/lib/syncCore.php';
 require_once ROOT.'/lib/syncSave.php';
