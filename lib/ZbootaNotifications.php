@@ -197,8 +197,11 @@ class ZbootaNotifications {
           "Zboota notification",
           "Violations for: ".join(', ',$carIds)."<br>\n"
           ."Please check <a href='http://shadiakiki1986.github.io/zboota-server/client/'>your app</a> for more details.<br>\n"
-          ."--Zboota server"
+          ."--Yet Another Zboota App"
         );
+          #."<br>".PHP_EOL
+          #."PS: The server was down between 2016-07 and 2017-03. It was just fixed it this week, so you may receive notifications for zboota that you had already received before. Sorry about that :)<br>".PHP_EOL
+
         echo date("Y-m-d H:i")." : Email ".($simulate?"(simulated) ":"")."{$email} about ".join(', ',$carIds)."\n";
       }
       return !$simulate;
