@@ -2,6 +2,7 @@
 * Author: Shadi Akiki ( shadiakiki1986 at gmail dot com )
 * Licensed under WTFPL
 * [![Build Status](https://secure.travis-ci.org/shadiakiki1986/zboota-server.png)](http://travis-ci.org/shadiakiki1986/zboota-server)
+* http://shadiakiki1986.github.io/zboota-server/
 
 # Description
 * Server-side of zboota app
