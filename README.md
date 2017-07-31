@@ -5,10 +5,11 @@
 
 # Description
 * Server-side of zboota app
-* It serves an API to the following websites
+* ~~It serves an API to the following websites
  * http://www.isf.gov.lb/ar/speedtickets
- * http://www.parkmeterlebanon.com/default/STATMENT_OF_ACCOUNT.aspx
+ * http://www.parkmeterlebanon.com/default/STATMENT_OF_ACCOUNT.aspx~~
 * It manages user information and updates their data daily from the sites above
+* complements [zboota-server-nodejs](https://github.com/shadiakiki1986/zboota-server-nodejs) which serves the API to the mobile app [zboota-app](https://github.com/shadiakiki1986/zboota-app)
 
 # Architecture
 * php server
